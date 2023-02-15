@@ -1,0 +1,6 @@
+package com.buddywatch.buddywatch_app;
+
+import io.flutter.embedding.android.FlutterActivity;
+
+public class MainActivity extends FlutterActivity {
+}
