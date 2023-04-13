@@ -11,6 +11,13 @@ buildscript {
     }
 }
 
+defaultConfig {
+
+    minSdkVersion 23
+    versionCode flutterVersionCode.toInteger()
+    versionName flutterVersionName
+}
+
 allprojects {
     repositories {
         google()
