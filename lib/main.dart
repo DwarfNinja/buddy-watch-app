@@ -1,3 +1,4 @@
+import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/register.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'BuddyWatch',
-      home: Register(),
+      home: Login(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -128,17 +129,26 @@ class _RegisterState extends State<Register> {
                             if (passwordController.text.length < 6) {
                               _validatePasswordConfirm = true;
                             }
-                            if (passwordConfirmationController.text.length < 6) {
+                            if (passwordConfirmationController.text.length <
+                                6) {
                               _validatePasswordConfirm = true;
                             }
-                            if (_validateEmail && _validatePassword &&
-                                _validatePassword) {
+                            print(_validateEmail);
+                            print(_validatePassword);
+                            print(_validatePasswordConfirm);
+                            if (!_validateEmail && !_validatePassword &&
+                                !_validatePassword) {
                               authService.signUp(emailController.text,
                                   passwordController.text);
-                              var a = authService.onAuthStateChange();
-                              print(a);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()),
+                              );
                             }
-                          });
+                          }
+                          );
+
                         },
                         child: const Text('Submit'),
                       ),
@@ -147,7 +157,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(50.0),
+                padding: const EdgeInsets.all(20.0),
                 color: Colors.black,
                 alignment: Alignment.center,
               )
