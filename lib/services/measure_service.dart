@@ -16,4 +16,15 @@ class MeasureService {
 
     return measureList;
   }
+
+  Future<Measure> getMeasureById(id) async {
+    final measureListResponse = await supabase
+        .from('Measure')
+        .select('*')
+        .eq('measure_id', id);
+
+    Measure measure = Measure.fromJson(measureListResponse);
+
+    return measure;
+  }
 }
