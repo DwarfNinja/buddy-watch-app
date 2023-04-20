@@ -6,10 +6,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class MeasureService {
   final supabase = Supabase.instance.client;
 
-  Future<List<Measure>> getAllMeasures() async {
+  Future<List<Measure>> getAllMeasuresOfUser() async {
     final measureListResponse = await supabase
-        .from('Measure')
-        .select('*');
+        .from('measures')
+        .select('*')
+        .eq('user_id', supabase.auth.currentUser!.id);
 
     List<Measure> measureList = [];
     measureListResponse.forEach((measure) => measureList.add(Measure.fromJson(measure)));
@@ -19,9 +20,9 @@ class MeasureService {
 
   Future<Measure> getMeasureById(id) async {
     final measureListResponse = await supabase
-        .from('Measure')
+        .from('measures')
         .select('*')
-        .eq('measure_id', id);
+        .eq('id', id);
 
     Measure measure = Measure.fromJson(measureListResponse);
 
