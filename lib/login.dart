@@ -21,13 +21,13 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.blueGrey.shade900,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Expanded(
-              flex: 1,
+              flex: 2,
               child: Center(
                 child: Text(
                   'BuddyWatch',
@@ -40,7 +40,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -88,11 +88,11 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.black,
+                          shadowColor: Colors.blueGrey.shade900,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
                           ),
-                          primary: Colors.black,
+                          primary: Colors.blueGrey.shade900,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {
