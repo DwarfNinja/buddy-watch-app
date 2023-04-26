@@ -1,3 +1,6 @@
+import 'package:buddywatch_app/healthbook.dart';
+import 'package:buddywatch_app/profile.dart';
+import 'package:buddywatch_app/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -82,10 +85,12 @@ class _DashboardState extends State<Dashboard> {
                                     size: 75.0,
                                   ),
                                 )),
-                            Container(
+                        InkWell(
+                          child: Container(
                                 height: 125.0,
                                 width: 125.0,
                                 color: Colors.transparent,
+
                                 child: Container(
                                   decoration: const BoxDecoration(
                                       color: Colors.white,
@@ -95,8 +100,17 @@ class _DashboardState extends State<Dashboard> {
                                     Icons.monitor_heart,
                                     color: Colors.black,
                                     size: 75.0,
+
                                   ),
+
                                 )),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Healthbook()),
+                              );
+                      },),
                           ],
                         ),
                       ),
@@ -229,33 +243,68 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
             bottomNavigationBar: Theme(
+
               data: Theme.of(context).copyWith(
                 // sets the background color of the `BottomNavigationBar`
+
                 canvasColor: Colors.black,
               ),
               child: BottomNavigationBar(
                 unselectedItemColor: Colors.white,
-                items: const [
+                selectedItemColor: Colors.white,
+
+                items: [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.home, color: Colors.white),
                     label: "Home",
+                    icon: IconButton(
+                      icon: const Icon(Icons.home),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Dashboard()),
+                        );
+                      },
+                    )
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.account_circle, color: Colors.white),
                     label: "Profile",
+                      icon: IconButton(
+                        icon: const Icon(Icons.account_circle),
+
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Profile()),
+                          );
+                        },
+                      )
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.settings, color: Colors.white),
                     label: "Settings",
+                      icon: IconButton(
+                        icon: const Icon(Icons.settings),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const Settings()),
+                          );
+                        },
+                      )
                   )
                 ],
+
               ),
+
               // body: Column(
               //     children: [
               //     Expanded(
               //     child: SingleChildScrollView(
               //     child: Column(
               //     children: [
-            )));
+            )
+
+        )
+
+    );
   }
 }
