@@ -26,20 +26,31 @@ class _HealthbookState extends State<Healthbook> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Expanded(
+                Expanded(
                   flex: 1,
-                  child: Center(
-                    child: Text(
-                      'Vandaag',
-                      style: TextStyle(
+                  child: AppBar(
+                    centerTitle: true,
+                    title: const Text('BuddyWatch'),
+                    backgroundColor: Colors.black,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 50.0, left: 20.0, bottom: 20.0, right: 20.0),
+                  child: Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: Text(
+                        'Vandaag',
+                        style: TextStyle(
                           fontSize: 30,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 6,
                   child: Container(
                     child: Column(
                       children: [
@@ -61,8 +72,7 @@ class _HealthbookState extends State<Healthbook> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20.0, right: 20.0, top: 40.0, bottom: 40.0),
+                          padding: const EdgeInsets.all(20.0),
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius:
@@ -80,7 +90,7 @@ class _HealthbookState extends State<Healthbook> {
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(left: 20.0, right: 20.0),
+                              const EdgeInsets.only(left: 0.0, right: 0.0),
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius:
