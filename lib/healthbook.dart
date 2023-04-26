@@ -19,7 +19,7 @@ class _HealthbookState extends State<Healthbook> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey.shade900,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -42,8 +42,21 @@ class _HealthbookState extends State<Healthbook> {
                 child: Container(
                   child: Column(
                     children: [
-                      Image.asset(
-                        'assets/images/duimpje.jpeg',
+                      Container(
+                        height: 150.0,
+                        width: 150.0,
+                        color: Colors.transparent,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: const Icon(
+                            Icons.thumb_up,
+                            color: Colors.black,
+                            size: 75.0,
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 40.0),
@@ -90,17 +103,37 @@ class _HealthbookState extends State<Healthbook> {
                             });
                           },
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ),
-              ),
-              const Spacer(
-                flex: 1,
               ),
             ],
           ),
         ),
+          bottomNavigationBar: Theme(
+            data: Theme.of(context).copyWith(
+            // sets the background color of the BottomNavigationBar
+            canvasColor: Colors.black,
+            ),
+            child: BottomNavigationBar(
+              unselectedItemColor: Colors.white,
+              items: const [
+                BottomNavigationBarItem(
+                icon: Icon(Icons.home, color: Colors.white),
+                label: "Home",
+                ),
+                BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle, color: Colors.white),
+                label: "Profile",
+                ),
+                BottomNavigationBarItem(
+                icon: Icon(Icons.settings, color: Colors.white),
+                label: "Settings",
+                ),
+              ],
+            ),
+          ),
       ),
     );
   }
