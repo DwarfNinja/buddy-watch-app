@@ -1,6 +1,6 @@
 import 'package:buddywatch_app/dashboard.dart';
 import 'package:buddywatch_app/login.dart';
-import 'package:buddywatch_app/register.dart';
+import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,9 +18,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'BuddyWatch',
-      home: Login(),
+      home: StreamBuilder<AuthState>(
+          stream: AuthService().onAuthStateChange(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              switch (snapshot.data!.event) {
+                case AuthChangeEvent.passwordRecovery:
+                // TODO: Handle this case.
+                  break;
+                case AuthChangeEvent.signedIn:
+                  return const Dashboard();
+                case AuthChangeEvent.signedOut:
+                  return const Login();
+                case AuthChangeEvent.tokenRefreshed:
+                // TODO: Handle this case.
+                  break;
+                case AuthChangeEvent.userUpdated:
+                // TODO: Handle this case.
+                  break;
+                case AuthChangeEvent.userDeleted:
+                // TODO: Handle this case.
+                  break;
+                case AuthChangeEvent.mfaChallengeVerified:
+                // TODO: Handle this case.
+                  break;
+              }
+            }
+            return AuthService().isLoggedIn() ? const Dashboard() : const Login();
+          }
+      ),
     );
   }
 }
