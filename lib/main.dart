@@ -1,4 +1,6 @@
+import 'package:buddywatch_app/dashboard.dart';
 import 'package:buddywatch_app/login.dart';
+import 'package:buddywatch_app/register.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
