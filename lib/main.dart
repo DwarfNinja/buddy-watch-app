@@ -1,6 +1,6 @@
-import 'package:buddywatch_app/dashboard.dart';
 import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
+import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
                 // TODO: Handle this case.
                   break;
                 case AuthChangeEvent.signedIn:
-                  return const Dashboard();
+                  return const Home();
                 case AuthChangeEvent.signedOut:
                   return const Login();
                 case AuthChangeEvent.tokenRefreshed:
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
                   break;
               }
             }
-            return AuthService().isLoggedIn() ? const Dashboard() : const Login();
+            return AuthService().isLoggedIn() ? const Home() : const Login();
           }
       ),
     );

@@ -1,11 +1,9 @@
 import 'package:buddywatch_app/profile.dart';
 import 'package:buddywatch_app/settings.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 
-import 'dashboard.dart';
+import 'home.dart';
 
 class Healthbook extends StatefulWidget {
   const Healthbook({Key? key}) : super(key: key);
@@ -145,7 +143,7 @@ class _HealthbookState extends State<Healthbook> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Dashboard()),
+                              builder: (context) => const Home()),
                         );
                       },
                     )),
@@ -175,13 +173,6 @@ class _HealthbookState extends State<Healthbook> {
                     ))
               ],
             ),
-
-            // body: Column(
-            //     children: [
-            //     Expanded(
-            //     child: SingleChildScrollView(
-            //     child: Column(
-            //     children: [
           )),
     );
   }
