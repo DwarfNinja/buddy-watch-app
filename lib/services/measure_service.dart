@@ -1,16 +1,29 @@
 import 'dart:async';
 
 import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MeasureService {
-  final supabase = Supabase.instance.client;
+  final _supabase = Supabase.instance.client;
 
   Future<List<Measure>> getAllMeasuresOfUser() async {
-    final measureListResponse = await supabase
+    final measureListResponse = await _supabase
         .from('measures')
         .select('*')
-        .eq('user_id', supabase.auth.currentUser!.id);
+        .eq('user_id', _supabase.auth.currentUser!.id);
+
+    List<Measure> measureList = [];
+    measureListResponse.forEach((measure) => measureList.add(Measure.fromJson(measure)));
+
+    return measureList;
+  }
+
+  Future<List<Measure>> getFilteredMeasuresOfUser(MeasurementType measurementType) async {
+    final measureListResponse = await _supabase
+        .from('measures')
+        .select(measurementType.value!)
+        .eq('user_id', _supabase.auth.currentUser!.id);
 
     List<Measure> measureList = [];
     measureListResponse.forEach((measure) => measureList.add(Measure.fromJson(measure)));
@@ -19,7 +32,7 @@ class MeasureService {
   }
 
   Future<Measure> getMeasureById(id) async {
-    final measureListResponse = await supabase
+    final measureListResponse = await _supabase
         .from('measures')
         .select('*')
         .eq('id', id);
