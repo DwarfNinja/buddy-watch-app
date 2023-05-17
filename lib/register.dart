@@ -37,129 +37,148 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text('BuddyWatch'),
-            backgroundColor: Colors.black,
-          ),
+          backgroundColor: Colors.blueGrey.shade900,
           body: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // const Text('Error Showed if Field is Empty on Submit button Pressed'),
-                      TextField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          labelText: 'E-mailadres',
-                          errorText: _validateEmail ? errorText1 : null,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-
-                      // const Text('Error Showed if Field is Empty on Submit button Pressed'),
-                      TextField(
-                        controller: passwordController,
-                        decoration: InputDecoration(
-                          labelText: 'Wachtwoord',
-                          errorText: _validatePassword ? errorText2 : null,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      // const Text('Error Showed if Field is Empty on Submit button Pressed'),
-                      TextField(
-                        controller: passwordConfirmationController,
-                        decoration: InputDecoration(
-                          labelText: 'Wachtwoord bevestigen',
-                          errorText: _validatePasswordConfirm
-                              ? errorText3
-                              : null,
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      CheckboxListTile( //checkbox positioned at right
-                        value: check2,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        //checkbox at left
-                        onChanged: (bool? value) {
-                          setState(() {
-                            check2 = value;
-                          });
-                        },
-                        title: const Text(
-                            "Ik ga akkoord met de algemene voorwaarden"),
-                      ),
-                      CheckboxListTile( //checkbox positioned at right
-                        value: check3,
-                        controlAffinity: ListTileControlAffinity.leading,
-                        //checkbox at left
-                        onChanged: (bool? value) {
-                          setState(() {
-                            check3 = value;
-                          });
-                        },
-                        title: const Text(
-                            "Ik ga akkoord met de privacy verklaring"),
-                      ),
-
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            emailController.text.isEmpty ?
-                            _validateEmail = true : _validateEmail = false;
-                            passwordController.text.isEmpty ?
-                            _validatePassword = true : _validatePassword =
-                            false;
-                            passwordConfirmationController.text.isEmpty
-                                ? _validatePasswordConfirm = true
-                                : _validatePasswordConfirm = false;
-                            if (!emailController.text.toString().contains(
-                                "@")) {
-                              _validateEmail = true;
-                              errorText1 = "Email bestaat niet";
-                            }
-                            if (passwordController.text !=
-                                passwordConfirmationController.text) {
-                              _validatePasswordConfirm = true;
-                              errorText3 = "Wachtwoord komt niet overeen";
-                            }
-                            if (passwordController.text.length < 6) {
-                              _validatePasswordConfirm = true;
-                            }
-                            if (passwordConfirmationController.text.length <
-                                6) {
-                              _validatePasswordConfirm = true;
-                            }
-                            print(_validateEmail);
-                            print(_validatePassword);
-                            print(_validatePasswordConfirm);
-                            if (!_validateEmail && !_validatePassword &&
-                                !_validatePassword) {
-                              authService.signUp(emailController.text,
-                                  passwordController.text);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Login()),
-                              );
-                            }
-                          }
-                          );
-
-                        },
-                        child: const Text('Submit'),
-                      ),
-                    ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Expanded(
+                flex: 2,
+                child: Center(
+                  child: Text(
+                    'BuddyWatch',
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(20.0),
-                color: Colors.black,
-                alignment: Alignment.center,
+              Expanded(
+                flex: 5,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.white,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 100.0, bottom: 15.0, left: 15.0, right: 15.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // const Text('Error Showed if Field is Empty on Submit button Pressed'),
+                          TextField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              labelText: 'E-mailadres',
+                              errorText: _validateEmail ? errorText1 : null,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+
+                          // const Text('Error Showed if Field is Empty on Submit button Pressed'),
+                          TextField(
+                            controller: passwordController,
+                            decoration: InputDecoration(
+                              labelText: 'Wachtwoord',
+                              errorText: _validatePassword ? errorText2 : null,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          // const Text('Error Showed if Field is Empty on Submit button Pressed'),
+                          TextField(
+                            controller: passwordConfirmationController,
+                            decoration: InputDecoration(
+                              labelText: 'Wachtwoord bevestigen',
+                              errorText: _validatePasswordConfirm
+                                  ? errorText3
+                                  : null,
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          CheckboxListTile( //checkbox positioned at right
+                            value: check2,
+                            controlAffinity: ListTileControlAffinity.leading,
+                            //checkbox at left
+                            onChanged: (bool? value) {
+                              setState(() {
+                                check2 = value;
+                              });
+                            },
+                            title: const Text(
+                                "Ik ga akkoord met de algemene voorwaarden"),
+                          ),
+                          CheckboxListTile( //checkbox positioned at right
+                            value: check3,
+                            controlAffinity: ListTileControlAffinity.leading,
+                            //checkbox at left
+                            onChanged: (bool? value) {
+                              setState(() {
+                                check3 = value;
+                              });
+                            },
+                            title: const Text(
+                                "Ik ga akkoord met de privacy verklaring"),
+                          ),
+
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey.shade900
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                emailController.text.isEmpty ?
+                                _validateEmail = true : _validateEmail = false;
+                                passwordController.text.isEmpty ?
+                                _validatePassword = true : _validatePassword =
+                                false;
+                                passwordConfirmationController.text.isEmpty
+                                    ? _validatePasswordConfirm = true
+                                    : _validatePasswordConfirm = false;
+                                if (!emailController.text.toString().contains(
+                                    "@")) {
+                                  _validateEmail = true;
+                                  errorText1 = "Email bestaat niet";
+                                }
+                                if (passwordController.text !=
+                                    passwordConfirmationController.text) {
+                                  _validatePasswordConfirm = true;
+                                  errorText3 = "Wachtwoord komt niet overeen";
+                                }
+                                if (passwordController.text.length < 6) {
+                                  _validatePasswordConfirm = true;
+                                }
+                                if (passwordConfirmationController.text.length <
+                                    6) {
+                                  _validatePasswordConfirm = true;
+                                }
+                                print(_validateEmail);
+                                print(_validatePassword);
+                                print(_validatePasswordConfirm);
+                                if (!_validateEmail && !_validatePassword &&
+                                    !_validatePassword) {
+                                  authService.signUp(emailController.text,
+                                      passwordController.text);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Login()),
+                                  );
+                                }
+                              }
+                              );
+
+                            },
+                            child: const Text('Submit'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const Spacer(
+                flex: 1,
               )
             ],
           ),
