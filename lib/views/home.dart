@@ -41,17 +41,17 @@ class _HomeState extends State<Home> {
                 onTap: (index) => setState(() => currentIndex = index),
                 items: const [
                   BottomNavigationBarItem(
-                      label: "Home",
-                      icon: Icon(Icons.home_rounded, size: 35),
+                    label: "Home",
+                    icon: Icon(Icons.home_rounded, size: 35),
                   ),
                   BottomNavigationBarItem(
-                      label: "Profile",
-                      icon: Icon(Icons.account_circle_rounded, size: 35),
+                    label: "Profile",
+                    icon: Icon(Icons.account_circle_rounded, size: 35),
                   ),
                   BottomNavigationBarItem(
-                      label: "Settings",
-                      icon: Icon(Icons.settings_rounded, size: 35),
-                      )
+                    label: "Settings",
+                    icon: Icon(Icons.settings_rounded, size: 35),
+                  )
                 ],
               ),
             )

@@ -1,5 +1,7 @@
+import 'package:buddywatch_app/color_palette.dart';
 import 'package:buddywatch_app/profile.dart';
 import 'package:buddywatch_app/settings.dart';
+import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 
@@ -19,161 +21,103 @@ class _HealthbookState extends State<Healthbook> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Colors.blueGrey.shade900,
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: AppBar(
-                    centerTitle: true,
-                    title: const Text('BuddyWatch'),
-                    backgroundColor: Colors.black,
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 50.0, left: 20.0, bottom: 20.0, right: 20.0),
-                  child: Expanded(
-                    flex: 2,
-                    child: Center(
-                      child: Text(
-                        'Vandaag',
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: Container(
-                    child: Column(
+          backgroundColor: ColorPalette.darkGrey,
+          body: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          height: 150.0,
-                          width: 150.0,
-                          color: Colors.transparent,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.green,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
-                            ),
-                            child: const Icon(
-                              Icons.thumb_up,
-                              color: Colors.black,
-                              size: 75.0,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              color: Colors.white,
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Text(
-                                "Er zijn geen symptomen gedetecteerd. Geniet van uw dag.",
-                                style: TextStyle(fontSize: 25),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: IconButton(
+                                iconSize: 40,
+                                onPressed: () => Navigator.of(context).pop(),
+                                icon: const Icon(
+                                    Icons.arrow_back_rounded,
+                                    color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 0.0, right: 0.0),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              color: Colors.white,
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Text(
-                                "Hoe voelt u zich?",
-                                style: TextStyle(fontSize: 25),
-                              ),
-                            ),
-                          ),
+                        const Text(
+                          "Profile",
+                          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: FlutterRating(
-                            rating: rating,
-                            starCount: 5,
-                            size: 60,
-                            onRatingChanged: (value) {
-                              setState(() {
-                                print(value);
-                                rating = value;
-                              });
-                            },
-                          ),
-                        ),
+                        const Spacer(),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 15),
+                    const ThumbIndicator(size: 160, iconSize: 80, indication: Indication.warning),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Er zijn geen symptomen gedetecteerd. Geniet van uw dag.",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 0.0, right: 0.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Hoe voelt u zich?",
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: FlutterRating(
+                        rating: rating,
+                        starCount: 5,
+                        size: 60,
+                        onRatingChanged: (value) {
+                          setState(() {
+                            rating = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              // sets the background color of the `BottomNavigationBar`
-
-              canvasColor: Colors.black,
-            ),
-            child: BottomNavigationBar(
-              unselectedItemColor: Colors.white,
-              selectedItemColor: Colors.white,
-              items: [
-                BottomNavigationBarItem(
-                    label: "Home",
-                    icon: IconButton(
-                      icon: const Icon(Icons.home),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Home()),
-                        );
-                      },
-                    )),
-                BottomNavigationBarItem(
-                    label: "Profile",
-                    icon: IconButton(
-                      icon: const Icon(Icons.account_circle),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Profile()),
-                        );
-                      },
-                    )),
-                BottomNavigationBarItem(
-                    label: "Settings",
-                    icon: IconButton(
-                      icon: const Icon(Icons.settings),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Settings()),
-                        );
-                      },
-                    ))
-              ],
-            ),
-          )),
+      ),
     );
   }
 }
