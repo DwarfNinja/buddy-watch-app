@@ -1,4 +1,5 @@
 
+import 'package:buddywatch_app/color_palette.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -15,10 +16,11 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: ColorPalette.darkGrey,
       body: Center(
         child: Text(
           "Profile",
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white),
         ),
       ),
     );
