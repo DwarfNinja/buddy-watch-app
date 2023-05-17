@@ -1,4 +1,5 @@
 import 'package:buddywatch_app/views/healthbook.dart';
+import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -20,10 +21,8 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(25),
-                    //apply padding to all four sides
                     child: Align(
                         alignment: Alignment.center,
-                        // Align however you like (i.e .centerRight, centerLeft)
                         child: Text(
                           'Afgelopen 7 dagen',
                           textAlign: TextAlign.center,
@@ -33,26 +32,13 @@ class _DashboardState extends State<Dashboard> {
                             color: Colors.white,
                             fontSize: 24,
                           ),
-                        )),
+                        ),
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(25),
+                  const Padding(
+                    padding: EdgeInsets.all(25),
                     //apply padding to all four sides
-                    child: Container(
-                        height: 125.0,
-                        width: 125.0,
-                        color: Colors.transparent,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                          child: const Icon(
-                            Icons.thumb_up,
-                            color: Colors.black,
-                            size: 75.0,
-                          ),
-                        )),
+                    child: ThumbIndicator(size: 140, iconSize: 65, indication: Indication.warning)
                   ),
                   Padding(
                     padding: const EdgeInsets.all(25),
@@ -60,39 +46,38 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
-                        Container(
-                            height: 125.0,
-                            width: 125.0,
-                            color: Colors.transparent,
+                        SizedBox(
+                            height: 125,
+                            width: 125,
                             child: Container(
                               decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
+                                      Radius.circular(20.0),
+                                  ),
+                              ),
                               child: const Icon(
-                                Icons.fitness_center,
+                                Icons.fitness_center_rounded,
                                 color: Colors.black,
-                                size: 75.0,
+                                size: 90,
                               ),
                             )),
-                        InkWell(
-                          child: Container(
-                              height: 125.0,
-                              width: 125.0,
-                              color: Colors.transparent,
-
+                        GestureDetector(
+                          child: SizedBox(
+                              height: 125,
+                              width: 125,
                               child: Container(
                                 decoration: const BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.all(
-                                        Radius.circular(20.0))),
+                                        Radius.circular(20.0),
+                                    ),
+                                ),
                                 child: const Icon(
                                   Icons.monitor_heart,
                                   color: Colors.black,
                                   size: 75.0,
-
                                 ),
-
                               )),
                           onTap: () {
                             Navigator.push(
@@ -104,126 +89,25 @@ class _DashboardState extends State<Dashboard> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    //apply padding to all four sides
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_down,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_up,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_up,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_up,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                      ],
-                    ),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const <Widget>[
+                      ThumbIndicator(indication: Indication.positive),
+                      ThumbIndicator(indication: Indication.warning),
+                      ThumbIndicator(indication: Indication.warning),
+                      ThumbIndicator(indication: Indication.positive),
+                    ],
                   ),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.all(20),
-                    //apply padding to all four sides
+                    padding: const EdgeInsets.only(left: 50, right: 50),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_up,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_down,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
-                        Container(
-                            height: 70.0,
-                            width: 70.0,
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0))),
-                              child: const Icon(
-                                Icons.thumb_up,
-                                color: Colors.black,
-                                size: 30.0,
-                              ),
-                            )),
+                      children: const <Widget>[
+                        ThumbIndicator(indication: Indication.positive),
+                        ThumbIndicator(indication: Indication.negative),
+                        ThumbIndicator(indication: Indication.warning),
                       ],
                     ),
                   ),
