@@ -1,11 +1,7 @@
 import 'package:buddywatch_app/color_palette.dart';
-import 'package:buddywatch_app/profile.dart';
-import 'package:buddywatch_app/settings.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
-
-import 'home.dart';
 
 class Healthbook extends StatefulWidget {
   const Healthbook({Key? key}) : super(key: key);

@@ -1,14 +1,16 @@
 class Measure {
   int measureId;
-  DateTime time;
-  int respiratoryRate;
+  String userId;
+  DateTime createdAt;
+  double respiratoryRate;
   double temperature;
-  int heartRate;
-  int oxygenSaturation;
+  double heartRate;
+  double oxygenSaturation;
 
   Measure({
     required this.measureId,
-    required this.time,
+    required this.userId,
+    required this.createdAt,
     required this.respiratoryRate,
     required this.temperature,
     required this.heartRate,
@@ -18,7 +20,8 @@ class Measure {
   factory Measure.fromJson(Map<String, dynamic> json) {
     return Measure(
       measureId: json['measure_id'],
-      time: DateTime.parse(json['time']),
+      userId: json['user_id'],
+      createdAt: DateTime.parse(json['created_at']),
       respiratoryRate: json['respiratory_rate'],
       temperature: json['temperature'].toDouble(),
       heartRate: json['heart_rate'],
@@ -29,7 +32,8 @@ class Measure {
   Map<String, dynamic> toJson() {
     return {
       'measure_id': measureId,
-      'time': time.toIso8601String(),
+      'user_id': userId,
+      'created_at': createdAt.toIso8601String(),
       'respiratory_rate': respiratoryRate,
       'temperature': temperature,
       'heart_rate': heartRate,

@@ -19,14 +19,14 @@ class MeasureService {
     return measureList;
   }
 
-  Future<List<Measure>> getFilteredMeasuresOfUser(MeasurementType measurementType) async {
+  Future<List<double>> getFilteredMeasuresOfUser(MeasurementType measurementType) async {
     final measureListResponse = await _supabase
         .from('measures')
         .select(measurementType.value!)
         .eq('user_id', _supabase.auth.currentUser!.id);
 
-    List<Measure> measureList = [];
-    measureListResponse.forEach((measure) => measureList.add(Measure.fromJson(measure)));
+    List<double> measureList = [];
+    measureListResponse.forEach((measure) => measureList.add(measure));
 
     return measureList;
   }
