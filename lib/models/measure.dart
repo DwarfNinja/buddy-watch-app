@@ -23,7 +23,7 @@ class Measure {
       userId: json['user_id'],
       createdAt: DateTime.parse(json['created_at']),
       respiratoryRate: json['respiratory_rate'],
-      temperature: json['temperature'].toDouble(),
+      temperature: json['temperature'],
       heartRate: json['heart_rate'],
       oxygenSaturation: json['oxygen_saturation'],
     );

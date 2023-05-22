@@ -1,3 +1,4 @@
+import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,42 @@ class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
 }
-
+MeasureService measureService = MeasureService();
+var _customIndication = Indication.warning;
 class _DashboardState extends State<Dashboard> {
+
+  updateIcon() async {
+    GebruikerStatus gebruikerStatus = await measureService.CalculateStatus();
+// Here you can write your code
+    print(gebruikerStatus);
+    setState(() {
+      switch (gebruikerStatus) {
+        case GebruikerStatus.green:
+          setState(() {
+            _customIndication = Indication.positive;
+          });
+          break;
+        case GebruikerStatus.yellow:
+          setState(() {
+            _customIndication = Indication.warning;
+          });
+          break;
+        case GebruikerStatus.red:
+          setState(() {
+            _customIndication = Indication.negative;
+          });
+          break;
+      }
+    });
+  }
+
+  @override
+  initState()  {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      updateIcon();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +56,8 @@ class _DashboardState extends State<Dashboard> {
                 children: [
                   const SizedBox(height: 25),
                   Column(
-                    children: const [
-                      Text(
+                    children:  [
+                      const Text(
                         'Afgelopen 7 dagen',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -31,8 +66,9 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 24,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      ThumbIndicator(size: 140, iconSize: 65, indication: Indication.warning),
+                      const SizedBox(height: 20),
+                      ThumbIndicator(size: 140, iconSize: 65, indication: _customIndication,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 35),
