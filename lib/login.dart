@@ -1,6 +1,6 @@
-import 'package:buddywatch_app/dashboard.dart';
 import 'package:buddywatch_app/register.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
+import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -89,10 +89,10 @@ class _LoginState extends State<Login> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shadowColor: Colors.blueGrey.shade900,
+                          backgroundColor: Colors.blueGrey.shade900,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
                           ),
-                          primary: Colors.blueGrey.shade900,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {
@@ -102,7 +102,7 @@ class _LoginState extends State<Login> {
 
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => const Dashboard()),
+                              MaterialPageRoute(builder: (context) => const Home()),
                             );
                           }
                         },
