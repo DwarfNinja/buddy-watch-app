@@ -10,41 +10,9 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 MeasureService measureService = MeasureService();
-var _customIndication = Indication.warning;
+
 class _DashboardState extends State<Dashboard> {
-
-  updateIcon() async {
-    GebruikerStatus gebruikerStatus = await measureService.CalculateStatus();
-// Here you can write your code
-    print(gebruikerStatus);
-    setState(() {
-      switch (gebruikerStatus) {
-        case GebruikerStatus.green:
-          setState(() {
-            _customIndication = Indication.positive;
-          });
-          break;
-        case GebruikerStatus.yellow:
-          setState(() {
-            _customIndication = Indication.warning;
-          });
-          break;
-        case GebruikerStatus.red:
-          setState(() {
-            _customIndication = Indication.negative;
-          });
-          break;
-      }
-    });
-  }
-
-  @override
-  initState()  {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      updateIcon();
-    });
-    super.initState();
-  }
+  late final Future<Indication> averageIndication = measureService.calculateStatus();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +35,21 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ThumbIndicator(size: 140, iconSize: 65, indication: _customIndication,
+                      FutureBuilder(
+                        future: averageIndication,
+                        builder: (BuildContext context, AsyncSnapshot<Indication> snapshot) {
+                          print(snapshot.error.toString() + snapshot.stackTrace.toString());
+                          if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 5,
+                                  backgroundColor: Colors.black,
+                                  color: Colors.white),
+                            );
+                          }
+                          Indication averageIndication = snapshot.data as Indication;
+                          return ThumbIndicator(size: 140, iconSize: 65, indication: averageIndication);
+                          },
                       ),
                     ],
                   ),

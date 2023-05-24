@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:buddywatch_app/models/measure.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
+import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 enum GebruikerStatus {
   red,
@@ -47,33 +48,23 @@ class MeasureService {
     return measure;
   }
 
-  Future<GebruikerStatus> CalculateStatus() async {
-    var k = await getFilteredMeasuresOfUser(MeasurementType.heartRate);
+  Future<Indication> calculateStatus() async {
+    List<double> filteredMeasureDataList = await getFilteredMeasuresOfUser(MeasurementType.heartRate);
 
-      var average= k.reduce((a, b) => a + b) / k.length;
-      // for (var task in value as List<int>) {
-      //   list.add(task);
-      //   // do something
-      // }
+    double average= filteredMeasureDataList.reduce((a, b) => a + b) / filteredMeasureDataList.length;
 
-    // var result = _measureList.map((m) => m['heart_rate']).reduce((a, b) => a + b) / _measureList.length;
-    // print(result);
-    // print(_measureList);
-    print(average);
     if(average < 50) {
-      return GebruikerStatus.red;
+      return Indication.negative;
     }
     if(average > 130) {
-      return GebruikerStatus.red;
+      return Indication.negative;
     }
     if(average < 60 && average > 50) {
-      return GebruikerStatus.yellow;
+      return Indication.warning;
     }
     if(average > 110 && average < 130) {
-      return GebruikerStatus.yellow;
+      return Indication.warning;
     }
-    return GebruikerStatus.green;
-    //return GebruikerStatus.geel;
-
+    return Indication.positive;
   }
 }
