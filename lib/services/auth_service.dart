@@ -5,6 +5,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthService {
   final supabase = Supabase.instance.client;
 
+  get data => null;
+
+  User? getUser() {
+    return supabase.auth.currentUser;
+  }
+
   Future<AuthResponse> logIn(String email, String password) async {
     return await supabase.auth.signInWithPassword(
       email: email,
@@ -24,11 +30,11 @@ class AuthService {
       password: password,
       data: {
         'first_name': firstName,
-            'proposition': proposition,
-            'last_name': lastName,
-            'age': age,
-            'height': height,
-            'weight': weight
+        'proposition': proposition,
+        'last_name': lastName,
+        'age': age,
+        'height': height,
+        'weight': weight
       }
     );
   }

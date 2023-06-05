@@ -294,12 +294,6 @@ class _RegisterState extends State<Register> {
                                     6) {
                                   _validatePasswordConfirm = true;
                                 }
-                                print(parsedLeeftijd.runtimeType);
-                                print(parsedLengte.runtimeType);
-                                print(parsedGewicht.runtimeType);
-                                print(_validateEmail);
-                                print(_validatePassword);
-                                print(_validatePasswordConfirm);
                                 if (!_validateEmail &&
                                     !_validatePassword &&
                                     !_validatePassword) {
