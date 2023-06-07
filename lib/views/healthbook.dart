@@ -16,7 +16,7 @@ class _HealthbookState extends State<Healthbook> {
   MeasureService measureService = MeasureService();
   late final Stream<Measure> currentMeasureStream;
 
-  double rating = 3;
+  int rating = 3;
 
   @override
   void initState() {
@@ -123,12 +123,13 @@ class _HealthbookState extends State<Healthbook> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: FlutterRating(
-                        rating: rating,
+                        rating: rating.toDouble(),
                         starCount: 5,
                         size: 60,
                         onRatingChanged: (value) {
                           setState(() {
-                            rating = value;
+                            rating = value.toInt();
+                            measureService.insertRating(rating);
                           });
                         },
                       ),

@@ -1,5 +1,5 @@
 class Measure {
-  int? measureId;
+  int? id;
   String? userId;
   DateTime createdAt;
   double respiratoryRate;
@@ -8,7 +8,7 @@ class Measure {
   double oxygenSaturation;
 
   Measure({
-    required this.measureId,
+    required this.id,
     required this.userId,
     required this.createdAt,
     required this.respiratoryRate,
@@ -27,19 +27,19 @@ class Measure {
 
   factory Measure.fromJson(Map<String, dynamic> json) {
     return Measure(
-      measureId: json['measure_id'],
+      id: json['id'],
       userId: json['user_id'],
       createdAt: DateTime.parse(json['created_at']),
-      respiratoryRate: json['respiratory_rate'],
-      temperature: json['temperature'],
-      heartRate: json['heart_rate'],
-      oxygenSaturation: json['oxygen_saturation'],
+      respiratoryRate: (json['respiratory_rate'] as int).toDouble(),
+      temperature: (json['temperature'] as int).toDouble(),
+      heartRate: (json['heart_rate'] as int).toDouble(),
+      oxygenSaturation: (json['oxygen_saturation'] as int).toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'measure_id': measureId,
+      'id': id,
       'user_id': userId,
       'created_at': createdAt.toIso8601String(),
       'respiratory_rate': respiratoryRate,
@@ -47,5 +47,15 @@ class Measure {
       'heart_rate': heartRate,
       'oxygen_saturation': oxygenSaturation,
     };
+  }
+  @override
+  String toString() {
+    return '{id: $id, '
+        'user_id: $userId, '
+        'created_at: $createdAt, '
+        'respiratory_rate: $respiratoryRate, t'
+        'emperature: $temperature, '
+        'heart_rate: $heartRate,'
+        'oxygen_saturation: $oxygenSaturation}';
   }
 }

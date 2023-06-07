@@ -4,13 +4,15 @@ import 'package:buddywatch_app/settings.dart';
 import 'package:buddywatch_app/views/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import '../services/measure_service.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
 }
-
+MeasureService measureService = MeasureService();
 class _HomeState extends State<Home> {
   int currentIndex = 0;
   final pages = [
@@ -18,6 +20,13 @@ class _HomeState extends State<Home> {
     const Profile(),
     const Settings(),
   ];
+
+  @override
+  initState()  {
+ //  measureService.deleteAllData();
+ //   measureService.insertDummyData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

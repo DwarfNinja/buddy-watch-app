@@ -5,6 +5,8 @@ import 'package:buddywatch_app/models/measure.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../models/measureDTO.dart';
+
 
 class MeasureService {
   final _supabase = Supabase.instance.client;
@@ -42,6 +44,38 @@ class MeasureService {
     Measure measure = Measure.fromJson(measureListResponse);
 
     return measure;
+  }
+
+
+  void insertDummyData() async {
+    for(var v in MeasureDTO.dummyData()) {
+      await _supabase.from('measures').insert(v).select();
+    }
+  }
+
+  void insertRating(int rating) async {
+
+    await _supabase
+        .from('profiles')
+        .update({'rating': rating})
+        .eq('id', _supabase.auth.currentUser!.id)
+        .select();
+  }
+
+  void deleteAllData() async {
+    await _supabase.from('measures').delete().eq('user_id', _supabase.auth.currentUser!.id);
+  }
+
+  Future<List<double>> getMeasuresFromDateAndType (DateTime dateTime, MeasurementType measurementType) async {
+    final response = await _supabase
+        .from('measures')
+        .select(measurementType.value!)
+        .eq('created_at', dateTime)
+        .eq('user_id', _supabase.auth.currentUser!.id);
+
+    List<double> measureList = [];
+    response.forEach((measure) => measureList.add((measure[measurementType.value] as int).toDouble()));
+    return measureList;
   }
 
 

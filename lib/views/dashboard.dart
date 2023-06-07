@@ -3,6 +3,8 @@ import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 
+import '../models/measurement_type.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -44,10 +46,10 @@ class _DashboardState extends State<Dashboard> {
                           width: 125,
                           child: Container(
                             decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
                             ),
                             child: const Icon(
                               Icons.fitness_center_rounded,
@@ -61,10 +63,10 @@ class _DashboardState extends State<Dashboard> {
                             width: 125,
                             child: Container(
                               decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                  ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
                               ),
                               child: const Icon(
                                 Icons.monitor_heart,
