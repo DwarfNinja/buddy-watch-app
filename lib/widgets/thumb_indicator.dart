@@ -2,9 +2,10 @@ import 'package:buddywatch_app/color_palette.dart';
 import 'package:flutter/material.dart';
 
 enum Indication {
-  positive,
-  warning,
-  negative,
+  low,
+  elevated,
+  high,
+  critical,
 }
 
 enum SquareSize {
@@ -31,24 +32,28 @@ class ThumbIndicator extends StatelessWidget {
           decoration: BoxDecoration(
               color: (() {
                 switch(indication) {
-                  case Indication.positive:
-                    return ColorPalette.midGreen;
-                  case Indication.warning:
-                    return ColorPalette.midYellow;
-                  case Indication.negative:
+                  case Indication.low:
+                    return ColorPalette.green;
+                  case Indication.elevated:
+                    return ColorPalette.yellow;
+                  case Indication.high:
+                    return ColorPalette.darkOrange;
+                  case Indication.critical:
                     return ColorPalette.darkRed;
                 }
               }()),
               borderRadius: const BorderRadius.all(Radius.circular(20))),
           child: Icon(
-            indication == Indication.positive ? Icons.thumb_up_rounded : Icons.thumb_down_rounded,
+            indication == Indication.low ? Icons.thumb_up_rounded : Icons.thumb_down_rounded,
             color: (() {
               switch(indication) {
-                case Indication.positive:
+                case Indication.low:
                   return ColorPalette.lightGreen;
-                case Indication.warning:
+                case Indication.elevated:
+                  return ColorPalette.darkYellow;
+                case Indication.high:
                   return ColorPalette.orange;
-                case Indication.negative:
+                case Indication.critical:
                   return ColorPalette.lightRed;
               }
             }()),
