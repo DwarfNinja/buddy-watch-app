@@ -3,6 +3,8 @@ import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 
+import '../models/measurement_type.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -10,44 +12,26 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 MeasureService measureService = MeasureService();
-var _customIndication = Indication.warning;
 class _DashboardState extends State<Dashboard> {
+  late final Future<Indication> averageIndication = measureService.calculateStatus();
 
-  updateIcon() async {
-    GebruikerStatus gebruikerStatus = await measureService.CalculateStatus();
-// Here you can write your code
-    print(gebruikerStatus);
-    setState(() {
-      switch (gebruikerStatus) {
-        case GebruikerStatus.green:
-          setState(() {
-            _customIndication = Indication.positive;
-          });
-          break;
-        case GebruikerStatus.yellow:
-          setState(() {
-            _customIndication = Indication.warning;
-          });
-          break;
-        case GebruikerStatus.red:
-          setState(() {
-            _customIndication = Indication.negative;
-          });
-          break;
-      }
-    });
+  test() async {
+    await measureService.calculateStatus().then((value) => print(value));
+   // await measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+
   }
-
-  @override
-  initState()  {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      updateIcon();
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+      // DateTime now = DateTime.now();
+      // DateTime today = DateTime(now.year, now.month, now.day);
+      // DateTime today_neg1 = today.subtract(const Duration(days: 1));
+      // measureService.getAllMeasuresOfUser().then((value) =>
+      // {
+      //   print(value)
+      // });
+      test();
+      // measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+      //measureService.getFilteredMeasuresOfUser(MeasurementType.heartRate).then((value) => print(value));
     return SafeArea(
       child: Column(
         children: [
@@ -67,7 +51,20 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ThumbIndicator(size: 140, iconSize: 65, indication: _customIndication,
+                      FutureBuilder(
+                        future: averageIndication,
+                        builder: (BuildContext context, AsyncSnapshot<Indication> snapshot) {
+                          if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                  strokeWidth: 5,
+                                  backgroundColor: Colors.black,
+                                  color: Colors.white),
+                            );
+                          }
+                          Indication averageIndication = snapshot.data as Indication;
+                          return ThumbIndicator(size: 140, iconSize: 65, indication: averageIndication);
+                          },
                       ),
                     ],
                   ),
