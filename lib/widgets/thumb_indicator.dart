@@ -44,7 +44,7 @@ class ThumbIndicator extends StatelessWidget {
               }()),
               borderRadius: const BorderRadius.all(Radius.circular(20))),
           child: Icon(
-            indication == Indication.low ? Icons.thumb_up_rounded : Icons.thumb_down_rounded,
+            indication == Indication.low || indication == Indication.elevated ? Icons.thumb_up_rounded : Icons.thumb_down_rounded,
             color: (() {
               switch(indication) {
                 case Indication.low:
