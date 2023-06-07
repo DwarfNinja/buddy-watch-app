@@ -1,4 +1,5 @@
 import 'package:buddywatch_app/color_palette.dart';
+import 'package:buddywatch_app/views/dashboard.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
@@ -11,7 +12,7 @@ class Healthbook extends StatefulWidget {
 }
 
 class _HealthbookState extends State<Healthbook> {
-  double rating = 3;
+  int rating = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -98,12 +99,14 @@ class _HealthbookState extends State<Healthbook> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: FlutterRating(
-                        rating: rating,
+                        rating: rating.toDouble(),
                         starCount: 5,
                         size: 60,
                         onRatingChanged: (value) {
                           setState(() {
-                            rating = value;
+                            rating = value.toInt();
+                            print(rating);
+                            measureService.insertRating(rating);
                           });
                         },
                       ),

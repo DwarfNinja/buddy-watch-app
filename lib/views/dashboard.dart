@@ -3,6 +3,8 @@ import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 
+import '../models/measurement_type.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -10,12 +12,26 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 MeasureService measureService = MeasureService();
-
 class _DashboardState extends State<Dashboard> {
   late final Future<Indication> averageIndication = measureService.calculateStatus();
 
+  test() async {
+    await measureService.calculateStatus().then((value) => print(value));
+   // await measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+
+  }
   @override
   Widget build(BuildContext context) {
+      // DateTime now = DateTime.now();
+      // DateTime today = DateTime(now.year, now.month, now.day);
+      // DateTime today_neg1 = today.subtract(const Duration(days: 1));
+      // measureService.getAllMeasuresOfUser().then((value) =>
+      // {
+      //   print(value)
+      // });
+      test();
+      // measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+      //measureService.getFilteredMeasuresOfUser(MeasurementType.heartRate).then((value) => print(value));
     return SafeArea(
       child: Column(
         children: [
@@ -38,7 +54,6 @@ class _DashboardState extends State<Dashboard> {
                       FutureBuilder(
                         future: averageIndication,
                         builder: (BuildContext context, AsyncSnapshot<Indication> snapshot) {
-                          print(snapshot.error.toString() + snapshot.stackTrace.toString());
                           if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(
                               child: CircularProgressIndicator(
