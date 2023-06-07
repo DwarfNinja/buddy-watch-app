@@ -1,4 +1,6 @@
 import 'package:buddywatch_app/color_palette.dart';
+import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
@@ -11,7 +13,16 @@ class Healthbook extends StatefulWidget {
 }
 
 class _HealthbookState extends State<Healthbook> {
+  MeasureService measureService = MeasureService();
+  late final Stream<Measure> currentMeasureStream;
+
   double rating = 3;
+
+  @override
+  void initState() {
+    currentMeasureStream = measureService.getLiveMeasureStream();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +56,28 @@ class _HealthbookState extends State<Healthbook> {
                           ),
                         ),
                         const Text(
-                          "Profile",
+                          "Healthbook",
                           style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white),
                         ),
                         const Spacer(),
                       ],
                     ),
                     const SizedBox(height: 15),
-                    const ThumbIndicator(size: 160, iconSize: 80, indication: Indication.warning),
+                    StreamBuilder<Object>(
+                      stream: currentMeasureStream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                                strokeWidth: 5,
+                                backgroundColor: ColorPalette.darkGrey,
+                                color: Colors.white),
+                          );
+                        }
+                        Measure measure = snapshot.data as Measure;
+                        return ThumbIndicator(size: 160, iconSize: 80, indication: measureService.calculateStatus(measure));
+                      }
+                    ),
                   ],
                 ),
               ),

@@ -9,11 +9,8 @@ class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
 }
-MeasureService measureService = MeasureService();
 
 class _DashboardState extends State<Dashboard> {
-  late final Future<Indication> averageIndication = measureService.calculateStatus();
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -23,9 +20,9 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 children: [
                   const SizedBox(height: 25),
-                  Column(
+                  const Column(
                     children:  [
-                      const Text(
+                      Text(
                         'Afgelopen 7 dagen',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -34,23 +31,8 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 24,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      FutureBuilder(
-                        future: averageIndication,
-                        builder: (BuildContext context, AsyncSnapshot<Indication> snapshot) {
-                          print(snapshot.error.toString() + snapshot.stackTrace.toString());
-                          if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                  strokeWidth: 5,
-                                  backgroundColor: Colors.black,
-                                  color: Colors.white),
-                            );
-                          }
-                          Indication averageIndication = snapshot.data as Indication;
-                          return ThumbIndicator(size: 140, iconSize: 65, indication: averageIndication);
-                          },
-                      ),
+                      SizedBox(height: 20),
+                      ThumbIndicator(size: 140, iconSize: 65, indication: Indication.low),
                     ],
                   ),
                   const SizedBox(height: 35),
@@ -103,10 +85,10 @@ class _DashboardState extends State<Dashboard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const <Widget>[
-                      ThumbIndicator(indication: Indication.positive, text: "Maandag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Dinsdag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Woensdag"),
-                      ThumbIndicator(indication: Indication.positive, text: "Donderdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Maandag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Dinsdag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Woensdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Donderdag"),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -115,9 +97,9 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: const <Widget>[
-                        ThumbIndicator(indication: Indication.positive, text: "Vrijdag"),
-                        ThumbIndicator(indication: Indication.negative, text: "Zaterdag"),
-                        ThumbIndicator(indication: Indication.warning, text: "Zondag"),
+                        ThumbIndicator(indication: Indication.low, text: "Vrijdag"),
+                        ThumbIndicator(indication: Indication.critical, text: "Zaterdag"),
+                        ThumbIndicator(indication: Indication.elevated, text: "Zondag"),
                       ],
                     ),
                   ),
