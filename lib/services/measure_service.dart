@@ -90,14 +90,18 @@ class MeasureService {
 
   Stream<Measure> getLiveMeasureStream() {
     return Stream.periodic(const Duration(seconds: 2), (_) {
-      return Measure.base(
-          createdAt: DateTime.now(),
-          respiratoryRate: generateRandomNumber(0, 30).toDouble(),
-          temperature: generateRandomNumber(0, 50).toDouble(),
-          heartRate: generateRandomNumber(0, 180).toDouble(),
-          oxygenSaturation: generateRandomNumber(0, 100).toDouble(),
-      );
+      return getRandomMeasure();
     });
+  }
+
+  Measure getRandomMeasure() {
+      return Measure.base(
+        createdAt: DateTime.now(),
+        respiratoryRate: generateRandomNumber(0, 30).toDouble(),
+        temperature: generateRandomNumber(0, 50).toDouble(),
+        heartRate: generateRandomNumber(0, 180).toDouble(),
+        oxygenSaturation: generateRandomNumber(0, 100).toDouble(),
+      );
   }
 
   Indication calculateStatus(Measure measure) {
