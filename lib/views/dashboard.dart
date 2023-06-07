@@ -17,21 +17,21 @@ class _DashboardState extends State<Dashboard> {
 
   test() async {
     await measureService.calculateStatus().then((value) => print(value));
-   // await measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+    // await measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
 
   }
   @override
   Widget build(BuildContext context) {
-      // DateTime now = DateTime.now();
-      // DateTime today = DateTime(now.year, now.month, now.day);
-      // DateTime today_neg1 = today.subtract(const Duration(days: 1));
-      // measureService.getAllMeasuresOfUser().then((value) =>
-      // {
-      //   print(value)
-      // });
-      test();
-      // measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
-      //measureService.getFilteredMeasuresOfUser(MeasurementType.heartRate).then((value) => print(value));
+    // DateTime now = DateTime.now();
+    // DateTime today = DateTime(now.year, now.month, now.day);
+    // DateTime today_neg1 = today.subtract(const Duration(days: 1));
+    // measureService.getAllMeasuresOfUser().then((value) =>
+    // {
+    //   print(value)
+    // });
+    test();
+    // measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
+    //measureService.getFilteredMeasuresOfUser(MeasurementType.heartRate).then((value) => print(value));
     return SafeArea(
       child: Column(
         children: [
@@ -64,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
                           }
                           Indication averageIndication = snapshot.data as Indication;
                           return ThumbIndicator(size: 140, iconSize: 65, indication: averageIndication);
-                          },
+                        },
                       ),
                     ],
                   ),
@@ -77,10 +77,10 @@ class _DashboardState extends State<Dashboard> {
                           width: 125,
                           child: Container(
                             decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
                             ),
                             child: const Icon(
                               Icons.fitness_center_rounded,
@@ -94,10 +94,10 @@ class _DashboardState extends State<Dashboard> {
                             width: 125,
                             child: Container(
                               decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                  ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
                               ),
                               child: const Icon(
                                 Icons.monitor_heart,

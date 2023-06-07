@@ -60,7 +60,13 @@ class MeasureService {
 
   void insertRating(int rating) async {
 
-    await _supabase.from('profiles').insert({'rating': rating}).eq('user_id', _supabase.auth.currentUser!.id).select();
+    // await _supabase.from('profiles').update({'rating': rating}).eq('id', _supabase.auth.currentUser!.id);
+
+    final measureListResponse = await _supabase
+        .from('profiles')
+        .update({'rating': rating})
+        .eq('id', _supabase.auth.currentUser!.id).select();
+    print(measureListResponse);
   }
 
   void deleteAllData() async {
