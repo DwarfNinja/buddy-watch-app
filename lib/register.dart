@@ -179,6 +179,7 @@ class _RegisterState extends State<Register> {
                               const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordController,
+                            obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Wachtwoord',
                               errorText: _validatePassword ? errorText8 : null,
@@ -192,6 +193,7 @@ class _RegisterState extends State<Register> {
                               const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordConfirmationController,
+                            obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Wachtwoord bevestigen',
                               errorText:

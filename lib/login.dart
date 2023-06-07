@@ -60,6 +60,7 @@ class _LoginState extends State<Login> {
                       ),
                       TextFormField(
                         controller: passwordController,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Voer hier uw wachtwoord in',
                           labelText: 'Wachtwoord'

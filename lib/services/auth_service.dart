@@ -30,7 +30,7 @@ class AuthService {
       password: password,
       data: {
         'first_name': firstName,
-        'proposition': proposition,
+        'prepostion': proposition,
         'last_name': lastName,
         'age': age,
         'height': height,
@@ -43,18 +43,18 @@ class AuthService {
                                   String lastName, int age, int height,
                                   int weight, String email, String password) async {
     return await supabase.auth.updateUser(
-      {
+      UserAttributes(
         email: email,
         password: password,
         data: {
           'first_name': firstName,
-          'proposition': proposition,
+          'prepostion': proposition,
           'last_name': lastName,
           'age': age,
           'height': height,
           'weight': weight
         }
-      } as UserAttributes
+      )
     );
   }
 
