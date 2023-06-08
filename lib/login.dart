@@ -98,9 +98,7 @@ class _LoginState extends State<Login> {
                         ),
                         onPressed: () {
                           authService.logIn(emailController.text, passwordController.text);
-                          print(authService.isLoggedIn());
                           if(authService.isLoggedIn()) {
-
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => const Home()),
@@ -119,11 +117,10 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.black,
+                          shadowColor: Colors.black, backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                           ),
-                          primary: Colors.white,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {

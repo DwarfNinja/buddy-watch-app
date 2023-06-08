@@ -21,8 +21,7 @@ class _RegisterState extends State<Register> {
   TextEditingController gewichtController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmationController =
-      TextEditingController();
+  TextEditingController passwordConfirmationController = TextEditingController();
 
   final _text = TextEditingController();
   bool _validateVoornaam = false;
