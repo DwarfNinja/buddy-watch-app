@@ -1,6 +1,9 @@
+import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
+
+import '../models/measurement_type.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -10,7 +13,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,8 +22,8 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 children: [
                   const SizedBox(height: 25),
-                  Column(
-                    children: const [
+                  const Column(
+                    children:  [
                       Text(
                         'Afgelopen 7 dagen',
                         textAlign: TextAlign.center,
@@ -32,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      ThumbIndicator(size: 140, iconSize: 65, indication: Indication.warning),
+                      ThumbIndicator(size: 140, iconSize: 65, indication: Indication.low),
                     ],
                   ),
                   const SizedBox(height: 35),
@@ -44,10 +46,10 @@ class _DashboardState extends State<Dashboard> {
                           width: 125,
                           child: Container(
                             decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
                             ),
                             child: const Icon(
                               Icons.fitness_center_rounded,
@@ -61,10 +63,10 @@ class _DashboardState extends State<Dashboard> {
                             width: 125,
                             child: Container(
                               decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                  ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
                               ),
                               child: const Icon(
                                 Icons.monitor_heart,
@@ -85,10 +87,10 @@ class _DashboardState extends State<Dashboard> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const <Widget>[
-                      ThumbIndicator(indication: Indication.positive, text: "Maandag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Dinsdag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Woensdag"),
-                      ThumbIndicator(indication: Indication.positive, text: "Donderdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Maandag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Dinsdag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Woensdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Donderdag"),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -97,9 +99,9 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: const <Widget>[
-                        ThumbIndicator(indication: Indication.positive, text: "Vrijdag"),
-                        ThumbIndicator(indication: Indication.negative, text: "Zaterdag"),
-                        ThumbIndicator(indication: Indication.warning, text: "Zondag"),
+                        ThumbIndicator(indication: Indication.low, text: "Vrijdag"),
+                        ThumbIndicator(indication: Indication.critical, text: "Zaterdag"),
+                        ThumbIndicator(indication: Indication.elevated, text: "Zondag"),
                       ],
                     ),
                   ),
