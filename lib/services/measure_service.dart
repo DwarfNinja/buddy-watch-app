@@ -1,18 +1,13 @@
 import 'dart:async';
-import 'dart:async';
+import 'dart:math';
 
 import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../models/measureDTO.dart';
-enum GebruikerStatus {
-  red,
-  yellow,
-  green,
 
-}
 class MeasureService {
   final _supabase = Supabase.instance.client;
 
@@ -33,9 +28,9 @@ class MeasureService {
         .from('measures')
         .select(measurementType.value!)
         .eq('user_id', _supabase.auth.currentUser!.id);
+
     List<double> measureList = [];
     measureListResponse.forEach((measure) => measureList.add((measure[measurementType.value] as int).toDouble()));
-    // measureListResponse.forEach((measure) => measureList.add(double.parse([measurementType.value].toString())));
 
     return measureList;
   }
@@ -53,14 +48,18 @@ class MeasureService {
 
 
   void insertDummyData() async {
-    for(var v in MeasureDTO.dummyData()) {
-      await _supabase.from('measures').insert(v).select();
+    for(MeasureDTO measureDto in MeasureDTO.dummyData()) {
+      await _supabase.from('measures').insert(measureDto).select();
     }
   }
 
   void insertRating(int rating) async {
 
-    await _supabase.from('profiles').insert({'rating': rating}).eq('user_id', _supabase.auth.currentUser!.id).select();
+    await _supabase
+        .from('profiles')
+        .update({'rating': rating})
+        .eq('id', _supabase.auth.currentUser!.id)
+        .select();
   }
 
   void deleteAllData() async {
@@ -79,73 +78,85 @@ class MeasureService {
     return measureList;
   }
 
-  Future<Indication> calculateyesterday() async {
-    DateTime now = DateTime.now();
-    DateTime today = DateTime(now.year, now.month, now.day);
-    // List<dynamic> list = [];
-    // getMeasuresFromDate(today).then((value) => list.add(value));
 
-    List<double> filteredMeasureDataList = await getMeasuresFromDateAndType(today, MeasurementType.heartRate);
-    double average = filteredMeasureDataList.reduce((a, b) => a + b) / filteredMeasureDataList.length;
-
-    return Indication.positive;
-  }
-
-  Future<double> calculateAverage(MeasurementType measurementType) async {
-    List<double> filteredMeasureDataList = await getFilteredMeasuresOfUser(measurementType);
-
-    double heartRate = filteredMeasureDataList.reduce((a, b) => a + b) / filteredMeasureDataList.length;
-    return heartRate;
-  }
-
-  Future<Indication> calculateStatus() async {
-    // List<double> filteredMeasureDataList = await getFilteredMeasuresOfUser(MeasurementType.heartRate);
-    // double heartRate = filteredMeasureDataList.reduce((a, b) => a + b) / filteredMeasureDataList.length;
-    List<Indication> averageIndications = [];
-    double heartRate =await calculateAverage(MeasurementType.heartRate);
-    double oxygen = await calculateAverage(MeasurementType.oxygenSaturation);
-
-
-    if((heartRate > 40 && heartRate < 51) || (heartRate > 101 && heartRate < 110)) {
-      return Indication.warning;
-    }
-    if((heartRate < 40) || (heartRate > 111)) {
-      return Indication.negative;
+  int generateRandomNumber(int min, int max) {
+    if (min >= max) {
+      throw ArgumentError('Invalid range');
     }
 
-    return Indication.positive;
+    Random random = Random();
+    return min + random.nextInt(max - min + 1);
+  }
+
+  Stream<Measure> getLiveMeasureStream() {
+    return Stream.periodic(const Duration(seconds: 2), (_) {
+      return getRandomMeasure();
+    });
+  }
+
+  Measure getRandomMeasure() {
+      return Measure.base(
+        createdAt: DateTime.now(),
+        respiratoryRate: generateRandomNumber(0, 30).toDouble(),
+        temperature: generateRandomNumber(0, 50).toDouble(),
+        heartRate: generateRandomNumber(0, 180).toDouble(),
+        oxygenSaturation: generateRandomNumber(0, 100).toDouble(),
+      );
+  }
+
+  Indication calculateStatus(Measure measure) {
+    Indication respiratoryRateStatus = getOxygenSaturationStatus(measure.respiratoryRate);
+    Indication temperatureStatus = getTemperatureStatus(measure.temperature);
+    Indication heartRateStatus = getHeartRateStatus(measure.heartRate);
+    Indication oxygenSaturationStatus = getOxygenSaturationStatus(measure.oxygenSaturation);
+
+    Indication averageIndication = Indication.values[(respiratoryRateStatus.index +
+        temperatureStatus.index + heartRateStatus.index + oxygenSaturationStatus.index) ~/ 4];
+
+    return averageIndication;
+  }
+
+  Indication getRespiratoryRateStatus(double respiratoryRate) {
+    if(respiratoryRate >= 15 && respiratoryRate <= 20) {
+      return Indication.elevated;
+    }
+    else if((respiratoryRate < 9) || (respiratoryRate >= 21 && respiratoryRate <= 30)) {
+      return Indication.high;
+    }
+    else if(respiratoryRate > 30) {
+      return Indication.critical;
+    }
+    return Indication.low;
+  }
+
+  Indication getTemperatureStatus(double temperature) {
+    if((temperature >= 35.1 && temperature <= 36.5) || temperature > 37.5) {
+      return Indication.elevated;
+    }
+    else if(temperature < 35.1) {
+      return Indication.high;
+    }
+    return Indication.low;
   }
 
 
-  //   List<Measure> yesterday = [];
-  //   await getAllMeasuresOfUser().then((value) => {
-  //   for(var a in value) {
-  //     if(a.createdAt == DateTime.now().subtract(const Duration(days: 1))) {
-  //       yesterday.add(value as Measure)
-  //     }
-  //   }});
-  //   return Indication.positive;
-  //
-  // }
+  Indication getHeartRateStatus(double heartRate) {
+    if(heartRate >= 40 && heartRate <= 51) {
+      return Indication.elevated;
+    }
+    else if((heartRate < 40) || (heartRate >= 111 && heartRate <= 130)) {
+      return Indication.high;
+    }
+    else if(heartRate > 130) {
+      return Indication.critical;
+    }
+    return Indication.low;
+  }
 
-
-  // Future<Indication> calculateStatus() async {
-  //   List<double> filteredMeasureDataList = await getFilteredMeasuresOfUser(MeasurementType.heartRate);
-  //
-  //   double average= filteredMeasureDataList.reduce((a, b) => a + b) / filteredMeasureDataList.length;
-  //
-  //   if(average < 50) {
-  //     return Indication.negative;
-  //   }
-  //   if(average > 130) {
-  //     return Indication.negative;
-  //   }
-  //   if(average < 60 && average > 50) {
-  //     return Indication.warning;
-  //   }
-  //   if(average > 110 && average < 130) {
-  //     return Indication.warning;
-  //   }
-  //   return Indication.positive;
-  // }
+  Indication getOxygenSaturationStatus(double oxygenSaturation) {
+    if(oxygenSaturation < 90) {
+      return Indication.critical;
+    }
+    return Indication.low;
+  }
 }

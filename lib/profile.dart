@@ -1,5 +1,4 @@
 
-import 'package:buddywatch_app/color_palette.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -43,12 +42,6 @@ class _ProfileState extends State<Profile> {
   var errorText7 = "E-mailadres kan niet leeg zijn";
   var errorText8 = "Wachtwoord moet minimaal 6 tekens bevatten";
   var errorText9 = "Wachtwoord moet minimaal 6 tekens bevatten";
-
-  @override
-  void initState() {
-    print(authService.getUser().toString());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

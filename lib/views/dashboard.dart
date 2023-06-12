@@ -1,9 +1,6 @@
-import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
-
-import '../models/measurement_type.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -11,27 +8,10 @@ class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
 }
-MeasureService measureService = MeasureService();
+
 class _DashboardState extends State<Dashboard> {
-  late final Future<Indication> averageIndication = measureService.calculateStatus();
-
-  test() async {
-    await measureService.calculateStatus().then((value) => print(value));
-   // await measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
-
-  }
   @override
   Widget build(BuildContext context) {
-      // DateTime now = DateTime.now();
-      // DateTime today = DateTime(now.year, now.month, now.day);
-      // DateTime today_neg1 = today.subtract(const Duration(days: 1));
-      // measureService.getAllMeasuresOfUser().then((value) =>
-      // {
-      //   print(value)
-      // });
-      test();
-      // measureService.calculateAverage(MeasurementType.heartRate).then((value) => print(value));
-      //measureService.getFilteredMeasuresOfUser(MeasurementType.heartRate).then((value) => print(value));
     return SafeArea(
       child: Column(
         children: [
@@ -39,9 +19,9 @@ class _DashboardState extends State<Dashboard> {
               child: Column(
                 children: [
                   const SizedBox(height: 25),
-                  Column(
+                  const Column(
                     children:  [
-                      const Text(
+                      Text(
                         'Afgelopen 7 dagen',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -50,22 +30,8 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 24,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      FutureBuilder(
-                        future: averageIndication,
-                        builder: (BuildContext context, AsyncSnapshot<Indication> snapshot) {
-                          if (snapshot.hasError || snapshot.data == null || snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                  strokeWidth: 5,
-                                  backgroundColor: Colors.black,
-                                  color: Colors.white),
-                            );
-                          }
-                          Indication averageIndication = snapshot.data as Indication;
-                          return ThumbIndicator(size: 140, iconSize: 65, indication: averageIndication);
-                          },
-                      ),
+                      SizedBox(height: 20),
+                      ThumbIndicator(size: 140, iconSize: 65, indication: Indication.low),
                     ],
                   ),
                   const SizedBox(height: 35),
@@ -77,27 +43,28 @@ class _DashboardState extends State<Dashboard> {
                           width: 125,
                           child: Container(
                             decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
                             ),
                             child: const Icon(
                               Icons.fitness_center_rounded,
                               color: Colors.black,
                               size: 90,
                             ),
-                          )),
+                          ),
+                      ),
                       GestureDetector(
                         child: SizedBox(
                             height: 125,
                             width: 125,
                             child: Container(
                               decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(20.0),
-                                  ),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20.0),
+                                ),
                               ),
                               child: const Icon(
                                 Icons.monitor_heart,
@@ -111,17 +78,18 @@ class _DashboardState extends State<Dashboard> {
                             MaterialPageRoute(
                                 builder: (context) => const Healthbook()),
                           );
-                        },),
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: const <Widget>[
-                      ThumbIndicator(indication: Indication.positive, text: "Maandag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Dinsdag"),
-                      ThumbIndicator(indication: Indication.warning, text: "Woensdag"),
-                      ThumbIndicator(indication: Indication.positive, text: "Donderdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Maandag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Dinsdag"),
+                      ThumbIndicator(indication: Indication.elevated, text: "Woensdag"),
+                      ThumbIndicator(indication: Indication.low, text: "Donderdag"),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -130,9 +98,9 @@ class _DashboardState extends State<Dashboard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: const <Widget>[
-                        ThumbIndicator(indication: Indication.positive, text: "Vrijdag"),
-                        ThumbIndicator(indication: Indication.negative, text: "Zaterdag"),
-                        ThumbIndicator(indication: Indication.warning, text: "Zondag"),
+                        ThumbIndicator(indication: Indication.low, text: "Vrijdag"),
+                        ThumbIndicator(indication: Indication.critical, text: "Zaterdag"),
+                        ThumbIndicator(indication: Indication.elevated, text: "Zondag"),
                       ],
                     ),
                   ),
