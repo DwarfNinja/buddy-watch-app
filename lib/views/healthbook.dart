@@ -16,14 +16,14 @@ class _HealthbookState extends State<Healthbook> {
   MeasureService measureService = MeasureService();
   late final Stream<Measure> currentMeasureStream;
 
-  int rating = 3;
-
-  Map<Indication, String> indicationMessage = {
-    Indication.low: "Er zijn geen abnormale waardes gedetecteerd.",
-    Indication.elevated: "Er zijn milde waardes gedetecteerd. Wij adviseren dat u zichzelf uit deze situatie haalt.",
-    Indication.high: "Er zijn hoge waardes gedecteerd. Bekijk uw terugvalplan voor de stappen die u moet ondernemen.",
-    Indication.critical: "Er zijn waardse gedecteerd met een kritisch niveau. Neem zo snel mogelijk contact op met hulpverleners."
+  final Map<Indication, String> indicationMessage = {
+    Indication.low: "Er zijn geen abnormale waardes gedetecteerd. Geniet van uw dag!",
+    Indication.elevated: "Er zijn verhoogde waardes gedetecteerd. Bekijk uw signaleringsplan voor de stappen die u moet ondernemen.",
+    Indication.high: "Er zijn hoge waardes gedetecteerd. Wij adviseren dat u zichzelf uit de situatie verwijderd.",
+    Indication.critical: "Er zijn kritisch waardes gedetecteerd. Neem zo snel mogelijk contact op met hulpverleners."
   };
+
+  int rating = 0;
 
   @override
   void initState() {
