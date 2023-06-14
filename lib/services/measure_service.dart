@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/measureDTO.dart';
 
 
 class MeasureService {
@@ -48,8 +48,8 @@ class MeasureService {
 
 
   void insertDummyData() async {
-    for(var v in MeasureDTO.dummyData()) {
-      await _supabase.from('measures').insert(v).select();
+    for(MeasureDTO measureDto in MeasureDTO.dummyData()) {
+      await _supabase.from('measures').insert(measureDto).select();
     }
   }
 

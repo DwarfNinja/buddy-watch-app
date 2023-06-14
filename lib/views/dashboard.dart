@@ -1,9 +1,6 @@
-import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/views/healthbook.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:flutter/material.dart';
-
-import '../models/measurement_type.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -56,7 +53,8 @@ class _DashboardState extends State<Dashboard> {
                               color: Colors.black,
                               size: 90,
                             ),
-                          )),
+                          ),
+                      ),
                       GestureDetector(
                         child: SizedBox(
                             height: 125,
@@ -80,7 +78,8 @@ class _DashboardState extends State<Dashboard> {
                             MaterialPageRoute(
                                 builder: (context) => const Healthbook()),
                           );
-                        },),
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(height: 50),
