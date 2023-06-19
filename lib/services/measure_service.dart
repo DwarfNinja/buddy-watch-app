@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:buddywatch_app/models/dummyMeasureData.dart';
 import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/models/measureDTO.dart';
+
 import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
@@ -66,18 +69,54 @@ class MeasureService {
     await _supabase.from('measures').delete().eq('user_id', _supabase.auth.currentUser!.id);
   }
 
-  Future<List<double>> getMeasuresFromDateAndType (DateTime dateTime, MeasurementType measurementType) async {
+  Future<List<Measure>> getMeasuresFromDate (DateTime dateTime) async {
     final response = await _supabase
         .from('measures')
-        .select(measurementType.value!)
+        .select('*')
         .eq('created_at', dateTime)
         .eq('user_id', _supabase.auth.currentUser!.id);
 
-    List<double> measureList = [];
-    response.forEach((measure) => measureList.add((measure[measurementType.value] as int).toDouble()));
+    List<Measure> measureList = [];
+    response.forEach((measure) => measureList.add(Measure.fromJson(measure)));
     return measureList;
   }
 
+  List<Measure> filterMeasuresByDateTime(DateTime dateTime) {
+    List<Measure> measures = dummyDataLastWeek;
+    return measures.where((measure) {
+      // Compare the date part of the createdAt DateTime with the given dateTime
+      return measure.createdAt.year == dateTime.year &&
+          measure.createdAt.month == dateTime.month &&
+          measure.createdAt.day == dateTime.day;
+    }).toList();
+  }
+
+  Future<Indication> calculateStatusDay(DateTime day) async {
+    List<Measure> measureList = filterMeasuresByDateTime(day);
+    int sum = 0;
+
+    for (Measure measure in measureList) {
+      sum += calculateStatus(measure).index;
+    }
+    print(sum);
+    int averageIndex = sum ~/ measureList.length;
+    Indication averageIndication = Indication.values[averageIndex];
+
+    return averageIndication;
+  }
+
+  Future<Indication> calculateAverageStatusWeek() async {
+    List<Measure> measureList = dummyDataLastWeek;
+    int sum = 0;
+
+    for (Measure measure in measureList) {
+      sum += calculateStatus(measure).index;
+    }
+    int averageIndex = sum ~/ measureList.length;
+    Indication averageIndication = Indication.values[averageIndex];
+
+    return averageIndication;
+  }
 
   int generateRandomNumber(int min, int max) {
     if (min >= max) {
@@ -102,6 +141,16 @@ class MeasureService {
         heartRate: generateRandomNumber(0, 180).toDouble(),
         oxygenSaturation: generateRandomNumber(0, 100).toDouble(),
       );
+  }
+
+  Measure getRandomMeasureWithDate(DateTime dateTime) {
+    return Measure.base(
+      createdAt: dateTime,
+      respiratoryRate: generateRandomNumber(0, 30).toDouble(),
+      temperature: generateRandomNumber(0, 50).toDouble(),
+      heartRate: generateRandomNumber(0, 180).toDouble(),
+      oxygenSaturation: generateRandomNumber(0, 100).toDouble(),
+    );
   }
 
   Indication calculateStatus(Measure measure) {
@@ -130,10 +179,13 @@ class MeasureService {
   }
 
   Indication getTemperatureStatus(double temperature) {
-    if((temperature >= 35.1 && temperature <= 36.5) || temperature > 37.5) {
+    if((temperature >= 35.1 && temperature <= 36.5)) {
       return Indication.elevated;
     }
-    else if(temperature < 35.1) {
+    else if(temperature < 35.1 || temperature > 39) {
+      return Indication.critical;
+    }
+    else if(temperature >= 37.5 && temperature <= 39) {
       return Indication.high;
     }
     return Indication.low;
@@ -144,10 +196,10 @@ class MeasureService {
     if(heartRate >= 40 && heartRate <= 51) {
       return Indication.elevated;
     }
-    else if((heartRate < 40) || (heartRate >= 111 && heartRate <= 130)) {
+    else if((heartRate < 40 && heartRate >= 35) || (heartRate >= 111 && heartRate <= 130)) {
       return Indication.high;
     }
-    else if(heartRate > 130) {
+    else if(heartRate > 130 || heartRate < 35) {
       return Indication.critical;
     }
     return Indication.low;
