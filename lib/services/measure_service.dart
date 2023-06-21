@@ -9,10 +9,13 @@ import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:cron/cron.dart';
+import 'package:uuid/uuid.dart';
 
 class MeasureService {
   final _supabase = Supabase.instance.client;
+  late  List<Measure> measureList = [];
+  final uuid = const Uuid();
 
   Future<List<Measure>> getAllMeasuresOfUser() async {
     final measureListResponse = await _supabase
@@ -53,6 +56,14 @@ class MeasureService {
   void insertDummyData() async {
     for(MeasureDTO measureDto in MeasureDTO.dummyData()) {
       await _supabase.from('measures').insert(measureDto).select();
+    }
+  }
+
+  Future<void> insertMeasure(List<Measure> measures) async {
+    print(measures.length);
+    for(Measure measure in measures) {
+      print(measure.id);
+      await _supabase.from('measures').insert(measure).select();
     }
   }
 
@@ -98,7 +109,6 @@ class MeasureService {
     for (Measure measure in measureList) {
       sum += calculateStatus(measure).index;
     }
-    print(sum);
     int averageIndex = sum ~/ measureList.length;
     Indication averageIndication = Indication.values[averageIndex];
 
@@ -129,12 +139,16 @@ class MeasureService {
 
   Stream<Measure> getLiveMeasureStream() {
     return Stream.periodic(const Duration(seconds: 2), (_) {
-      return getRandomMeasure();
+      Measure m1 = getRandomMeasure();
+      measureList.add(m1);
+      return m1;
     });
   }
 
   Measure getRandomMeasure() {
       return Measure.base(
+        id: uuid.v1(),
+        userId: _supabase.auth.currentUser!.id,
         createdAt: DateTime.now(),
         respiratoryRate: generateRandomNumber(0, 30).toDouble(),
         temperature: generateRandomNumber(0, 50).toDouble(),
@@ -145,6 +159,8 @@ class MeasureService {
 
   Measure getRandomMeasureWithDate(DateTime dateTime) {
     return Measure.base(
+      id: uuid.v1(),
+      userId: _supabase.auth.currentUser!.id,
       createdAt: dateTime,
       respiratoryRate: generateRandomNumber(0, 30).toDouble(),
       temperature: generateRandomNumber(0, 50).toDouble(),

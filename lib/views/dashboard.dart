@@ -18,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   late final Future<Indication> _indicationToday;
   late final DateTime now = DateTime.now();
   late final DateTime today = DateTime(now.year, now.month, now.day);
-  late final String todayFormatted = DateFormat('EEEE').format(today);
+  String todayFormatted = "Today";
 
   late final Future<Indication> _indicationYesterday;
   late final DateTime todayNeg1 = today.subtract(const Duration(days: 1));

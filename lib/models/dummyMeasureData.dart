@@ -1,7 +1,13 @@
-import 'measure.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
+import 'measure.dart';
+final _supabase = Supabase.instance.client;
+const uuid = Uuid();
 List<Measure> dummyDataLastWeek = [
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 6)),
     respiratoryRate: 35,
     temperature: 43,
@@ -9,6 +15,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 88,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 6)),
     respiratoryRate: 32,
     temperature: 41,
@@ -16,6 +24,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 85,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 6)),
     respiratoryRate: 36,
     temperature: 41,
@@ -23,6 +33,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 85,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 6)),
     respiratoryRate: 44,
     temperature: 42,
@@ -30,6 +42,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 88,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 5)),
     respiratoryRate: 9.4,
     temperature: 28.7,
@@ -37,6 +51,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 97.8,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 5)),
     respiratoryRate: 6.1,
     temperature: 24.5,
@@ -44,6 +60,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 94.3,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 5)),
     respiratoryRate: 11.8,
     temperature: 21.3,
@@ -51,6 +69,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 98.1,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 5)),
     respiratoryRate: 8.5,
     temperature: 30.9,
@@ -58,6 +78,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 92.7,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 4)),
     respiratoryRate: 13.2,
     temperature: 26.4,
@@ -65,6 +87,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 96.5,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 4)),
     respiratoryRate: 4.7,
     temperature: 20.8,
@@ -72,6 +96,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 91.5,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 4)),
     respiratoryRate: 10.9,
     temperature: 18.2,
@@ -79,6 +105,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 99.7,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 4)),
     respiratoryRate: 6.8,
     temperature: 34.2,
@@ -86,6 +114,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 90.2,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 3)),
     respiratoryRate: 14,
     temperature: 38,
@@ -93,6 +123,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 97.3,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 3)),
     respiratoryRate: 12,
     temperature: 37,
@@ -100,6 +132,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 93.8,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 3)),
     respiratoryRate: 11.5,
     temperature: 36,
@@ -107,6 +141,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 98.5,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 3)),
     respiratoryRate: 9.2,
     temperature: 38,
@@ -114,6 +150,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 94.6,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
     respiratoryRate: 12.0,
     temperature: 24.1,
@@ -121,6 +159,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 95.9,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
     respiratoryRate: 4.3,
     temperature: 19.7,
@@ -128,6 +168,9 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 91.2,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
+
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
     respiratoryRate: 9.7,
     temperature: 16.9,
@@ -135,6 +178,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 99.3,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 2)),
     respiratoryRate: 7.5,
     temperature: 33.5,
@@ -142,6 +187,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 92.3,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
     respiratoryRate: 10.3,
     temperature: 22.8,
@@ -149,6 +196,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 97.1,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
     respiratoryRate: 5.9,
     temperature: 21.2,
@@ -156,6 +205,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 93.5,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
     respiratoryRate: 11.1,
     temperature: 15.8,
@@ -163,6 +214,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 98.8,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now().subtract(const Duration(days: 1)),
     respiratoryRate: 8.8,
     temperature: 32.2,
@@ -170,6 +223,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 94.9,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now(),
     respiratoryRate: 10,
     temperature: 37.2,
@@ -177,6 +232,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 96.2,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now(),
     respiratoryRate: 11,
     temperature: 36.8,
@@ -184,6 +241,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 93.1,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now(),
     respiratoryRate: 13,
     temperature: 37.1,
@@ -191,6 +250,8 @@ List<Measure> dummyDataLastWeek = [
     oxygenSaturation: 99.6,
   ),
   Measure.base(
+    id: uuid.v1(),
+    userId: _supabase.auth.currentUser!.id,
     createdAt: DateTime.now(),
     respiratoryRate: 12.2,
     temperature: 37,

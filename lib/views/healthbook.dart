@@ -2,6 +2,7 @@ import 'package:buddywatch_app/color_palette.dart';
 import 'package:buddywatch_app/models/measure.dart';
 import 'package:buddywatch_app/services/measure_service.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_native/flutter_rating_native.dart';
 
@@ -15,8 +16,9 @@ class Healthbook extends StatefulWidget {
 class _HealthbookState extends State<Healthbook> {
   MeasureService measureService = MeasureService();
   late final Stream<Measure> currentMeasureStream;
-
+  final cron = Cron();
   int rating = 3;
+
 
   Map<Indication, String> indicationMessage = {
     Indication.low: "Er zijn geen abnormale waardes gedetecteerd.",
@@ -28,6 +30,16 @@ class _HealthbookState extends State<Healthbook> {
   @override
   void initState() {
     currentMeasureStream = measureService.getLiveMeasureStream();
+    cron.schedule(Schedule.parse('*/1 * * * *'), () async {
+      List<Measure> measures = [];
+      print(measures.length);
+      List<Measure> newMeasures = List.from(measureService.measureList);
+      measures.addAll(newMeasures);
+      print(measures.length);
+      await measureService.insertMeasure(measures);
+      measureService.measureList = [];
+      print("test");
+    });
     super.initState();
   }
 
