@@ -1,15 +1,21 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:buddywatch_app/models/dummyMeasureData.dart';
 import 'package:buddywatch_app/models/measure.dart';
+import 'package:buddywatch_app/models/measureDTO.dart';
+
 import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:cron/cron.dart';
+import 'package:uuid/uuid.dart';
 
 class MeasureService {
   final _supabase = Supabase.instance.client;
+  late  List<Measure> measureList = [];
+  final uuid = const Uuid();
 
   Future<List<Measure>> getAllMeasuresOfUser() async {
     final measureListResponse = await _supabase
@@ -53,6 +59,14 @@ class MeasureService {
     }
   }
 
+  Future<void> insertMeasure(List<Measure> measures) async {
+    print(measures.length);
+    for(Measure measure in measures) {
+      print(measure.id);
+      await _supabase.from('measures').insert(measure).select();
+    }
+  }
+
   void insertRating(int rating) async {
 
     await _supabase
@@ -66,18 +80,55 @@ class MeasureService {
     await _supabase.from('measures').delete().eq('user_id', _supabase.auth.currentUser!.id);
   }
 
-  Future<List<double>> getMeasuresFromDateAndType (DateTime dateTime, MeasurementType measurementType) async {
+  Future<List<Measure>> getMeasuresFromDate (DateTime dateTime) async {
     final response = await _supabase
         .from('measures')
-        .select(measurementType.value!)
+        .select('*')
         .eq('created_at', dateTime)
         .eq('user_id', _supabase.auth.currentUser!.id);
 
-    List<double> measureList = [];
-    response.forEach((measure) => measureList.add((measure[measurementType.value] as int).toDouble()));
+    List<Measure> measureList = [];
+    response.forEach((measure) => measureList.add(Measure.fromJson(measure)));
     return measureList;
   }
 
+  List<Measure> filterMeasuresByDateTime(DateTime dateTime) {
+    List<Measure> measures = dummyDataLastWeek;
+    return measures.where((measure) {
+      // Compare the date part of the createdAt DateTime with the given dateTime
+      return measure.createdAt.year == dateTime.year &&
+          measure.createdAt.month == dateTime.month &&
+          measure.createdAt.day == dateTime.day;
+    }).toList();
+  }
+
+  Future<Indication> calculateStatusDay(DateTime day) async {
+    var sleepDataFuture = await Future.value(getSleepingHoursOfPastSevenDays());
+    List<Measure> measureList = filterMeasuresByDateTime(day);
+    int sum = 0;
+
+    for (Measure measure in measureList) {
+      sum += getHealthIndication(measure, sleepDataFuture).index;
+    }
+    int averageIndex = sum ~/ measureList.length;
+    Indication averageIndication = Indication.values[averageIndex];
+
+    return averageIndication;
+  }
+
+  Future<Indication> calculateAverageStatusWeek() async {
+    var sleepDataFuture = await Future.value(getSleepingHoursOfPastSevenDays());
+    List<Measure> measureList = dummyDataLastWeek;
+    int sum = 0;
+
+    for (Measure measure in measureList) {
+      sum += getHealthIndication(measure, sleepDataFuture).index;
+    }
+    int averageIndex = sum ~/ measureList.length;
+    Indication averageIndication = Indication.values[averageIndex];
+
+    return averageIndication;
+  }
 
   int generateRandomNumber(int min, int max) {
     if (min >= max) {
@@ -88,19 +139,18 @@ class MeasureService {
     return min + random.nextInt(max - min + 1);
   }
 
-  Stream<Measure> getLiveMeasureStream(bool callback) async* {
-    if (callback) {
-      yield getRandomMeasure(); // Emit the initial callback value
-    }
-
-    while (true) {
-      await Future.delayed(const Duration(seconds: 180));
-      yield getRandomMeasure(); // Emit the periodic measure
-    }
+  Stream<Measure> getLiveMeasureStream() {
+    return Stream.periodic(const Duration(seconds: 2), (_) {
+      Measure m1 = getRandomMeasure();
+      measureList.add(m1);
+      return m1;
+    });
   }
 
   Measure getRandomMeasure() {
       return Measure.base(
+        id: uuid.v1(),
+        userId: _supabase.auth.currentUser!.id,
         createdAt: DateTime.now(),
         respiratoryRate: generateRandomNumber(0, 30).toDouble(),
         temperature: generateRandomNumber(0, 50).toDouble(),
@@ -122,8 +172,6 @@ class MeasureService {
   }
 
   Indication getHealthIndication(Measure measure, List<double> sleepData) {
-    measure = Measure.base(createdAt: DateTime.now(), respiratoryRate: 0.0, temperature: 40.0, heartRate: 3.0, oxygenSaturation: 0.0);
-
     Indication respiratoryRateStatus = getRespiratoryRateStatus(measure.respiratoryRate);
     Indication temperatureStatus = getTemperatureStatus(measure.temperature);
     Indication heartRateStatus = getHeartRateStatus(measure.heartRate);
@@ -180,10 +228,13 @@ class MeasureService {
   }
 
   Indication getTemperatureStatus(double temperature) {
-    if((temperature >= 35.1 && temperature <= 36.5) || temperature > 37.5) {
+    if((temperature >= 35.1 && temperature <= 36.5)) {
       return Indication.elevated;
     }
-    else if(temperature < 35.1) {
+    else if(temperature < 35.1 || temperature > 39) {
+      return Indication.critical;
+    }
+    else if(temperature >= 37.5 && temperature <= 39) {
       return Indication.high;
     }
     return Indication.low;
@@ -194,10 +245,10 @@ class MeasureService {
     if(heartRate >= 40 && heartRate <= 51) {
       return Indication.elevated;
     }
-    else if((heartRate < 40) || (heartRate >= 111 && heartRate <= 130)) {
+    else if((heartRate < 40 && heartRate >= 35) || (heartRate >= 111 && heartRate <= 130)) {
       return Indication.high;
     }
-    else if(heartRate > 130) {
+    else if(heartRate > 130 || heartRate < 35) {
       return Indication.critical;
     }
     return Indication.low;

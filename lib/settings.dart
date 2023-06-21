@@ -21,7 +21,7 @@ class _SettingsState extends State<Settings> {
       body: SafeArea(
         child: Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Spacer(),

@@ -1,5 +1,5 @@
 class Measure {
-  int? id;
+  String? id;
   String? userId;
   DateTime createdAt;
   double respiratoryRate;
@@ -18,6 +18,8 @@ class Measure {
   });
 
   Measure.base({
+    required this.id,
+    required this.userId,
     required this.createdAt,
     required this.respiratoryRate,
     required this.temperature,
