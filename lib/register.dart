@@ -1,6 +1,7 @@
 import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -243,40 +244,20 @@ class _RegisterState extends State<Register> {
                                 backgroundColor: Colors.blueGrey.shade900),
                             onPressed: () {
                               setState(() {
-                                int parsedLeeftijd =
-                                    int.parse(leeftijdController.text);
-                                int parsedLengte =
-                                    int.parse(lengteController.text);
-                                int parsedGewicht =
-                                    int.parse(gewichtController.text);
+                                String formattedDate = leeftijdController.text;
+                                int parsedLengte = int.parse(lengteController.text);
+                                int parsedGewicht = int.parse(gewichtController.text);
 
-                                voornaamController.text.isEmpty
-                                    ? _validateVoornaam = true
-                                    : _validateVoornaam = false;
-                                tussenvoegselController.text.isEmpty
-                                    ? _validateTussenvoegsel = true
-                                    : _validateTussenvoegsel = false;
-                                achternaamController.text.isEmpty
-                                    ? _validateAchternaam = true
-                                    : _validateAchternaam = false;
-                                leeftijdController.text.isEmpty
-                                    ? _validateLeeftijd = true
-                                    : _validateLeeftijd = false;
-                                lengteController.text.isEmpty
-                                    ? _validateLengte = true
-                                    : _validateLengte = false;
-                                gewichtController.text.isEmpty
-                                    ? _validateGewicht = true
-                                    : _validateGewicht = false;
-                                emailController.text.isEmpty
-                                    ? _validateEmail = true
-                                    : _validateEmail = false;
-                                passwordController.text.isEmpty
-                                    ? _validatePassword = true
-                                    : _validatePassword = false;
-                                passwordConfirmationController.text.isEmpty
-                                    ? _validatePasswordConfirm = true
-                                    : _validatePasswordConfirm = false;
+                                voornaamController.text.isEmpty ? _validateVoornaam = true : _validateVoornaam = false;
+                                tussenvoegselController.text.isEmpty ? _validateTussenvoegsel = true : _validateTussenvoegsel = false;
+                                achternaamController.text.isEmpty ? _validateAchternaam = true : _validateAchternaam = false;
+                                leeftijdController.text.isEmpty ? _validateLeeftijd = true : _validateLeeftijd = false;
+                                lengteController.text.isEmpty ? _validateLengte = true : _validateLengte = false;
+                                gewichtController.text.isEmpty ? _validateGewicht = true : _validateGewicht = false;
+                                emailController.text.isEmpty ? _validateEmail = true : _validateEmail = false;
+                                passwordController.text.isEmpty ? _validatePassword = true : _validatePassword = false;
+                                passwordConfirmationController.text.isEmpty ? _validatePasswordConfirm = true : _validatePasswordConfirm = false;
+                                
                                 if (!emailController.text
                                     .toString()
                                     .contains("@")) {
@@ -303,17 +284,13 @@ class _RegisterState extends State<Register> {
                                           voornaamController.text,
                                           tussenvoegselController.text,
                                           achternaamController.text,
-                                          parsedLeeftijd,
+                                          formattedDate,
                                           parsedLengte,
                                           parsedGewicht,
                                           emailController.text,
                                           passwordController.text)
-                                      .then((value) => print(value));
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const Login()),
-                                  );
+                                      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()),
+                                  ));
                                 }
                               });
                             },

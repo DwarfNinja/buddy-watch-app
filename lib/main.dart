@@ -3,6 +3,7 @@ import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,11 @@ class MyApp extends StatelessWidget {
             return AuthService().isLoggedIn() ? const Home() : const Login();
           }
       ),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
     );
   }
 }

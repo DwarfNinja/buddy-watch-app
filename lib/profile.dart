@@ -1,6 +1,10 @@
 
+import 'package:buddywatch_app/color_palette.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
+import 'package:buddywatch_app/widgets/account_field.dart';
+import 'package:buddywatch_app/widgets/date_input.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
 
@@ -12,360 +16,161 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final formKey = GlobalKey<FormState>();
   AuthService authService = AuthService();
-  TextEditingController voornaamController = TextEditingController();
-  TextEditingController tussenvoegselController = TextEditingController();
-  TextEditingController achternaamController = TextEditingController();
-  TextEditingController leeftijdController = TextEditingController();
-  TextEditingController lengteController = TextEditingController();
-  TextEditingController gewichtController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmationController = TextEditingController();
 
-  final _text = TextEditingController();
-  bool _validateVoornaam = false;
-  bool _validateTussenvoegsel = false;
-  bool _validateAchternaam = false;
-  bool _validateLeeftijd = false;
-  bool _validateLengte = false;
-  bool _validateGewicht = false;
-  bool _validateEmail = false;
-  bool _validatePassword = false;
-  bool _validatePasswordConfirm = false;
-  var errorText1 = "Voornaam kan niet leeg zijn";
-  var errorText2 = "Tussenvoegsel kan niet leeg zijn";
-  var errorText3 = "Achternaam kan niet leeg zijn";
-  var errorText4 = "Leeftijd kan niet leeg zijn";
-  var errorText5 = "Lengte kan niet leeg zijn";
-  var errorText6 = "Gewicht kan niet leeg zijn";
-  var errorText7 = "E-mailadres kan niet leeg zijn";
-  var errorText8 = "Wachtwoord moet minimaal 6 tekens bevatten";
-  var errorText9 = "Wachtwoord moet minimaal 6 tekens bevatten";
+  final firstNameController = TextEditingController();
+  final prepositionController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+
+  bool submitted = false;
+
+  Future<Profile>? profile;
+
+
+  @override
+  void initState() {
+    authService.getProfile()
+        .then((value) {
+          firstNameController.text = value[0]["first_name"];
+          prepositionController.text = value[0]["preposition"] != value[0]["preposition"] ? value[0]["preposition"]  : "";
+          lastNameController.text = value[0]["last_name"];
+          dateOfBirthController.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(value[0]["date_of_birth"]));
+          weightController.text = value[0]["height"].toString();
+          heightController.text = value[0]["weight"].toString();
+    });
+    super.initState();
+  }
+
+
+  void onPressedSubmitBasicsChange() {
+    final format = DateFormat("dd-MM-yyyy");
+    DateTime gettingDate = format.parse(dateOfBirthController.text);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(gettingDate);
+
+    if (formKey.currentState!.validate()) {
+      profile?.then((value) => {
+
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.blueGrey.shade900,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Expanded(
-              flex: 3,
-              child: Center(
-                child: Text(
-                  'BuddyWatch',
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
+    return Scaffold(
+      backgroundColor: ColorPalette.darkGrey,
+      body: SafeArea(
+        child: Form(
+          key: formKey,
+          autovalidateMode: submitted
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Spacer(),
+                  Text(
+                    "Profiel",
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700, color: Colors.white),
+                  ),
+                  Spacer(),
+                ],
               ),
-            ),
-            Expanded(
-              flex: 11,
-              child: Container(
+              Container (
+                width: 375,
+                height: 600,
                 decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
                   color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 15.0, bottom: 0.0, left: 15.0, right: 15.0),
-                  child: Scrollbar(
-                    thumbVisibility: true,
-                    child: ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Voornaam:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: voornaamController,
-                              decoration: InputDecoration(
-                                hintText: "Voornaam",
-                                labelText: authService.getUser()!.userMetadata!["first_name"].toString(),
-                                errorText:
-                                _validateVoornaam ? errorText1 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Tussenvoegsel:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: tussenvoegselController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.userMetadata!["proposition"].toString(),
-                                errorText:
-                                _validateTussenvoegsel ? errorText2 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Achternaam:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: achternaamController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.userMetadata!["last_name"].toString(),
-                                errorText:
-                                _validateAchternaam ? errorText3 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Leeftijd:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: leeftijdController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.userMetadata!["age"].toString(),
-                                errorText: _validateLeeftijd ? errorText4 : null,
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Lengte:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: lengteController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.userMetadata!["height"].toString(),
-                                errorText: _validateLengte ? errorText5 : null,
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Gewicht:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: gewichtController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.userMetadata!["weight"].toString(),
-                                errorText: _validateGewicht ? errorText6 : null,
-                              ),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'E-mailadres:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: emailController,
-                              decoration: InputDecoration(
-                                labelText: authService.getUser()!.email.toString(),
-                                errorText: _validateEmail ? errorText7 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Wachtwoord:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: passwordController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: 'Wachtwoord',
-                                errorText: _validatePassword ? errorText8 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              onChanged: (text) => setState(() => _text),
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Wachtwoord bevestigen:',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 15.0, right: 15.0),
-                            child: TextField(
-                              controller: passwordConfirmationController,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                labelText: 'Wachtwoord bevestigen',
-                                errorText:
-                                _validatePasswordConfirm ? errorText9 : null,
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueGrey.shade900
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  if (voornaamController.text == null) {
-                                    voornaamController.text = authService.getUser()!.userMetadata!["first_name"].toString();
-                                  }
-                                  if (tussenvoegselController.text == null) {
-                                    tussenvoegselController.text = authService.getUser()!.userMetadata!["proposition"].toString();
-                                  }
-                                  if (achternaamController.text == null) {
-                                    achternaamController.text = authService.getUser()!.userMetadata!["last_name"].toString();
-                                  }
-                                  if (leeftijdController.text == null) {
-                                    leeftijdController.text = authService.getUser()!.userMetadata!["age"].toString();
-                                  }
-                                  if (lengteController.text == null) {
-                                    lengteController.text = authService.getUser()!.userMetadata!["height"].toString();
-                                  }
-                                  if (gewichtController.text == null) {
-                                    gewichtController.text = authService.getUser()!.userMetadata!["weight"].toString();
-                                  }
-                                  if (emailController.text == null) {
-                                    emailController.text = authService.getUser()!.email.toString();
-                                  }
-
-                                  int parsedLeeftijd = int.parse(leeftijdController.text);
-                                  int parsedLengte = int.parse(lengteController.text);
-                                  int parsedGewicht = int.parse(gewichtController.text);
-
-                                  if (!emailController.text
-                                      .toString()
-                                      .contains("@")) {
-                                    _validateEmail = true;
-                                    errorText7 = "Email bestaat niet";
-                                  }
-
-                                  if (passwordController.text != null) {
-                                    if (passwordController.text !=
-                                        passwordConfirmationController.text) {
-                                      _validatePasswordConfirm = true;
-                                      errorText9 = "Wachtwoord komt niet overeen";
-                                    }
-                                    if (passwordController.text.length < 6) {
-                                      _validatePasswordConfirm = true;
-                                    }
-                                    if (passwordConfirmationController.text.length < 6) {
-                                      _validatePasswordConfirm = true;
-                                    }
-                                  }
-                                  authService.updateUser(
-                                      voornaamController.text,
-                                      tussenvoegselController.text,
-                                      achternaamController.text,
-                                      parsedLeeftijd,
-                                      parsedLengte,
-                                      parsedGewicht,
-                                      emailController.text,
-                                      passwordController.text
-                                  );
-                                });
-                              },
-                              child: const Text('Submit'),
-                            ),
-                          ),
-                        ]);
-                      },
-                    ),
+                  padding: const EdgeInsets.all(30),
+                  child: Column(
+                    children: [
+                      AccountField(
+                        controller: firstNameController,
+                        keyboardType: TextInputType.number,
+                        text: "Voornaam",
+                        hint: "Voer hier uw voornaam in",
+                      ),
+                      const Spacer(),
+                      AccountField(
+                        controller: prepositionController,
+                        keyboardType: TextInputType.number,
+                        text: "Tussenvoegsel",
+                        hint: "Voer hier uw tussenvoegsel in",
+                      ),
+                      const Spacer(),
+                      AccountField(
+                        controller: lastNameController,
+                        keyboardType: TextInputType.number,
+                        text: "Achternaam",
+                        hint: "Voer hier uw achternaam in",
+                      ),
+                      const Spacer(),
+                      DateInput(
+                        controller: dateOfBirthController,
+                        hintStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey),
+                      ),
+                      const Spacer(),
+                      AccountField(
+                        controller: heightController,
+                        keyboardType: TextInputType.number,
+                        text: "Lengte",
+                        hint: "Voer hier uw lengte in",
+                      ),
+                      const Spacer(),
+                      AccountField(
+                        controller: weightController,
+                        keyboardType: TextInputType.number,
+                        text: "Gewicht",
+                        hint: "Voer hier uw gewicht in",
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            const Spacer(
-              flex: 2,
-            )
-          ],
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: GestureDetector(
+                  child: SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.save_rounded,
+                          color: Colors.black,
+                          size: 45,
+                        ),
+                      )),
+                  onTap: () {
+                    authService.updateProfile(
+                        firstNameController.text,
+                        prepositionController.text,
+                        lastNameController.text,
+                        dateOfBirthController.text,
+                        int.parse(heightController.text),
+                        int.parse(weightController.text),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
