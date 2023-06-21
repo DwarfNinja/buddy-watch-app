@@ -22,26 +22,22 @@ class AuthService {
     return await supabase.auth.signOut();
   }
 
-  Future<AuthResponse> signUp(String firstName, String proposition,
-                              String lastName, int age, int height,
-                              int weight, String email, String password) async {
+  Future<AuthResponse> signUp(String firstName, String preposition, String lastName, String birthDate, int height, int weight, String email, String password) async {
     return await supabase.auth.signUp(
       email: email,
       password: password,
       data: {
         'first_name': firstName,
-        'prepostion': proposition,
+        'prepostion': preposition,
         'last_name': lastName,
-        'age': age,
+        "date_of_birth": birthDate,
         'height': height,
-        'weight': weight
+        'weight': weight,
       }
     );
   }
   
-  Future<UserResponse> updateUser(String firstName, String proposition,
-                                  String lastName, int age, int height,
-                                  int weight, String email, String password) async {
+  Future<UserResponse> updateUser(String firstName, String proposition, String lastName, String birthDate, int height, int weight, String email, String password) async {
     return await supabase.auth.updateUser(
       UserAttributes(
         email: email,
@@ -50,12 +46,33 @@ class AuthService {
           'first_name': firstName,
           'prepostion': proposition,
           'last_name': lastName,
-          'age': age,
+          "date_of_birth": birthDate,
           'height': height,
-          'weight': weight
+          'weight': weight,
         }
       )
     );
+  }
+
+  Future<List<dynamic>> getProfile() async {
+    return await supabase.from('profiles')
+        .select('*')
+        .eq('id', supabase.auth.currentUser!.id);
+  }
+
+  Future<List<dynamic>> updateProfile(String firstName, String proposition, String lastName, String birthDate, int height, int weight) async {
+    return await supabase.from('profiles')
+        .update(
+        {
+          'first_name': firstName,
+          'prepostion': proposition,
+          'last_name': lastName,
+          "date_of_birth": birthDate,
+          'height': height,
+          'weight': weight,
+        }
+        )
+        .eq('id', supabase.auth.currentUser!.id).select();
   }
 
   Stream<AuthState> onAuthStateChange() {

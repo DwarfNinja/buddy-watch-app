@@ -88,10 +88,15 @@ class MeasureService {
     return min + random.nextInt(max - min + 1);
   }
 
-  Stream<Measure> getLiveMeasureStream() {
-    return Stream.periodic(const Duration(seconds: 2), (_) {
-      return getRandomMeasure();
-    });
+  Stream<Measure> getLiveMeasureStream(bool callback) async* {
+    if (callback) {
+      yield getRandomMeasure(); // Emit the initial callback value
+    }
+
+    while (true) {
+      await Future.delayed(const Duration(seconds: 180));
+      yield getRandomMeasure(); // Emit the periodic measure
+    }
   }
 
   Measure getRandomMeasure() {
@@ -104,16 +109,61 @@ class MeasureService {
       );
   }
 
-  Indication calculateStatus(Measure measure) {
-    Indication respiratoryRateStatus = getOxygenSaturationStatus(measure.respiratoryRate);
+  List<double> getSleepingHoursOfPastSevenDays() {
+    return [
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+      generateRandomNumber(1, 10).toDouble(),
+    ];
+  }
+
+  Indication getHealthIndication(Measure measure, List<double> sleepData) {
+    measure = Measure.base(createdAt: DateTime.now(), respiratoryRate: 0.0, temperature: 40.0, heartRate: 3.0, oxygenSaturation: 0.0);
+
+    Indication respiratoryRateStatus = getRespiratoryRateStatus(measure.respiratoryRate);
     Indication temperatureStatus = getTemperatureStatus(measure.temperature);
     Indication heartRateStatus = getHeartRateStatus(measure.heartRate);
     Indication oxygenSaturationStatus = getOxygenSaturationStatus(measure.oxygenSaturation);
+    Indication sleepStatus = getSleepStatus(sleepData);
 
-    Indication averageIndication = Indication.values[(respiratoryRateStatus.index +
-        temperatureStatus.index + heartRateStatus.index + oxygenSaturationStatus.index) ~/ 4];
+    print("respiratory_rate: ${respiratoryRateStatus} temperature: ${temperatureStatus} heart_rate: "
+        "${heartRateStatus} oxygen_saturation: ${oxygenSaturationStatus} sleep_status ${sleepStatus}");
 
-    return averageIndication;
+    Indication averageHealthIndication = Indication.values[(respiratoryRateStatus.index +
+        temperatureStatus.index + heartRateStatus.index + oxygenSaturationStatus.index + sleepStatus.index) ~/ 5];
+
+    return averageHealthIndication;
+  }
+
+  Indication calculateFullStatusIndication(Indication indication, int rating) {
+    int ratingModifier = getRatingIndicationModifier(rating);
+
+    int computedIndication;
+
+    if (indication.index == 0) {
+      computedIndication = (indication.index + ratingModifier).clamp(0, Indication.values.length - 1);
+    }
+    else {
+      computedIndication = (indication.index + ratingModifier).clamp(1, Indication.values.length - 1);
+    }
+
+    return Indication.values[computedIndication];
+  }
+
+  int getRatingIndicationModifier(int rating) {
+    if (rating == 0 || rating >= 3 && rating <= 4) {
+      return 0;
+    }
+    else if (rating >= 1 && rating <= 2) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
   }
 
   Indication getRespiratoryRateStatus(double respiratoryRate) {
@@ -158,5 +208,27 @@ class MeasureService {
       return Indication.critical;
     }
     return Indication.low;
+  }
+
+  Indication getSleepStatus(List<double> sleepHoursList) {
+    if (areElementsWithinMax(sleepHoursList, 6, 7)) {
+      return Indication.critical;
+    }
+    else if (areElementsWithinMax(sleepHoursList, 4, 7)) {
+      return Indication.high;
+    }
+    else if (areElementsWithinMax(sleepHoursList, 2, 7)) {
+      return Indication.elevated;
+    }
+    return Indication.low;
+  }
+
+  bool areElementsWithinMax(List<double> list, int elementIndex, int max) {
+    for (int element = 0; element < elementIndex - 1; element++) {
+      if (list[element] > max) {
+        return false;
+      }
+    }
+    return true;
   }
 }
