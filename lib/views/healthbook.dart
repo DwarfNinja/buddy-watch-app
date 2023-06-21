@@ -31,14 +31,11 @@ class _HealthbookState extends State<Healthbook> {
   void initState() {
     currentMeasureStream = measureService.getLiveMeasureStream();
     cron.schedule(Schedule.parse('*/1 * * * *'), () async {
-      List<Measure> measures = [];
-      print(measures.length);
-      List<Measure> newMeasures = List.from(measureService.measureList);
-      measures.addAll(newMeasures);
-      print(measures.length);
+      List<Measure> measures = List.from(measureService.measureList);
+      print('Original measures length: ${measures.length}');
       await measureService.insertMeasure(measures);
-      measureService.measureList = [];
-      print("test");
+      measureService.measureList.clear();
+      print('Inserted measures count: ${measures.length}');
     });
     super.initState();
   }
