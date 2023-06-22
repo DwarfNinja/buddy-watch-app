@@ -2,8 +2,8 @@ import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

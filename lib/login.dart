@@ -3,6 +3,8 @@ import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
 
+import 'color_palette.dart';
+
 class Login extends StatefulWidget {
 
   const Login({Key? key})
@@ -21,7 +23,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade900,
+      backgroundColor: ColorPalette.darkGrey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -89,8 +91,8 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.blueGrey.shade900,
-                          backgroundColor: Colors.blueGrey.shade900,
+                          shadowColor: ColorPalette.darkGrey,
+                          backgroundColor: ColorPalette.darkGrey,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
                           ),

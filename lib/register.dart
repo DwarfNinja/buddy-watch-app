@@ -1,7 +1,7 @@
+import 'package:buddywatch_app/color_palette.dart';
 import 'package:buddywatch_app/login.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -52,9 +52,8 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      backgroundColor: Colors.blueGrey.shade900,
+    return Scaffold(
+      backgroundColor: ColorPalette.darkGrey,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -88,45 +87,45 @@ class _RegisterState extends State<Register> {
                       return Column(children: [
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                               controller: voornaamController,
                               decoration: InputDecoration(
                                 labelText: 'Voornaam',
                                 errorText:
-                                    _validateVoornaam ? errorText1 : null,
+                                _validateVoornaam ? errorText1 : null,
                               ),
                               keyboardType: TextInputType.emailAddress),
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: tussenvoegselController,
                             decoration: InputDecoration(
                               labelText: 'Tussenvoegsel',
                               errorText:
-                                  _validateTussenvoegsel ? errorText2 : null,
+                              _validateTussenvoegsel ? errorText2 : null,
                             ),
                             keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: achternaamController,
                             decoration: InputDecoration(
                               labelText: 'Achternaam',
                               errorText:
-                                  _validateAchternaam ? errorText3 : null,
+                              _validateAchternaam ? errorText3 : null,
                             ),
                             keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: leeftijdController,
                             decoration: InputDecoration(
@@ -138,7 +137,7 @@ class _RegisterState extends State<Register> {
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: lengteController,
                             decoration: InputDecoration(
@@ -150,7 +149,7 @@ class _RegisterState extends State<Register> {
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: gewichtController,
                             decoration: InputDecoration(
@@ -163,7 +162,7 @@ class _RegisterState extends State<Register> {
                         // const Text('Error Showed if Field is Empty on Submit button Pressed'),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: emailController,
                             decoration: InputDecoration(
@@ -176,7 +175,7 @@ class _RegisterState extends State<Register> {
                         // const Text('Error Showed if Field is Empty on Submit button Pressed'),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordController,
                             obscureText: true,
@@ -190,21 +189,21 @@ class _RegisterState extends State<Register> {
                         // const Text('Error Showed if Field is Empty on Submit button Pressed'),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordConfirmationController,
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Wachtwoord bevestigen',
                               errorText:
-                                  _validatePasswordConfirm ? errorText9 : null,
+                              _validatePasswordConfirm ? errorText9 : null,
                             ),
                             keyboardType: TextInputType.emailAddress,
                           ),
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: CheckboxListTile(
                             //checkbox positioned at right
                             value: check2,
@@ -221,7 +220,7 @@ class _RegisterState extends State<Register> {
                         ),
                         Padding(
                           padding:
-                              const EdgeInsets.only(bottom: 15.0, right: 15.0),
+                          const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: CheckboxListTile(
                             //checkbox positioned at right
                             value: check3,
@@ -236,64 +235,94 @@ class _RegisterState extends State<Register> {
                                 "Ik ga akkoord met de privacy verklaring"),
                           ),
                         ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shadowColor: ColorPalette.darkGrey,
+                            backgroundColor: ColorPalette.darkGrey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            minimumSize: const Size.fromHeight(50), // NEW
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              String formattedDate = leeftijdController.text;
+                              int parsedLengte = int.parse(lengteController.text);
+                              int parsedGewicht = int.parse(gewichtController.text);
 
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueGrey.shade900),
-                            onPressed: () {
-                              setState(() {
-                                String formattedDate = leeftijdController.text;
-                                int parsedLengte = int.parse(lengteController.text);
-                                int parsedGewicht = int.parse(gewichtController.text);
+                              voornaamController.text.isEmpty ? _validateVoornaam = true : _validateVoornaam = false;
+                              achternaamController.text.isEmpty ? _validateAchternaam = true : _validateAchternaam = false;
+                              leeftijdController.text.isEmpty ? _validateLeeftijd = true : _validateLeeftijd = false;
+                              lengteController.text.isEmpty ? _validateLengte = true : _validateLengte = false;
+                              gewichtController.text.isEmpty ? _validateGewicht = true : _validateGewicht = false;
+                              emailController.text.isEmpty ? _validateEmail = true : _validateEmail = false;
+                              passwordController.text.isEmpty ? _validatePassword = true : _validatePassword = false;
+                              passwordConfirmationController.text.isEmpty ? _validatePasswordConfirm = true : _validatePasswordConfirm = false;
 
-                                voornaamController.text.isEmpty ? _validateVoornaam = true : _validateVoornaam = false;
-                                achternaamController.text.isEmpty ? _validateAchternaam = true : _validateAchternaam = false;
-                                leeftijdController.text.isEmpty ? _validateLeeftijd = true : _validateLeeftijd = false;
-                                lengteController.text.isEmpty ? _validateLengte = true : _validateLengte = false;
-                                gewichtController.text.isEmpty ? _validateGewicht = true : _validateGewicht = false;
-                                emailController.text.isEmpty ? _validateEmail = true : _validateEmail = false;
-                                passwordController.text.isEmpty ? _validatePassword = true : _validatePassword = false;
-                                passwordConfirmationController.text.isEmpty ? _validatePasswordConfirm = true : _validatePasswordConfirm = false;
-                                
-                                if (!emailController.text
-                                    .toString()
-                                    .contains("@")) {
-                                  _validateEmail = true;
-                                  errorText7 = "Email bestaat niet";
-                                }
-                                if (passwordController.text !=
-                                    passwordConfirmationController.text) {
-                                  _validatePasswordConfirm = true;
-                                  errorText9 = "Wachtwoord komt niet overeen";
-                                }
-                                if (passwordController.text.length < 6) {
-                                  _validatePasswordConfirm = true;
-                                }
-                                if (passwordConfirmationController.text.length <
-                                    6) {
-                                  _validatePasswordConfirm = true;
-                                }
-                                if (!_validateEmail &&
-                                    !_validatePassword &&
-                                    !_validatePassword) {
-                                  authService
-                                      .signUp(
-                                          voornaamController.text,
-                                          tussenvoegselController.text,
-                                          achternaamController.text,
-                                          formattedDate,
-                                          parsedLengte,
-                                          parsedGewicht,
-                                          emailController.text,
-                                          passwordController.text)
-                                      .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()),
-                                  ));
-                                }
-                              });
-                            },
-                            child: const Text('Submit'),
+                              if (!emailController.text
+                                  .toString()
+                                  .contains("@")) {
+                                _validateEmail = true;
+                                errorText7 = "Email bestaat niet";
+                              }
+                              if (passwordController.text !=
+                                  passwordConfirmationController.text) {
+                                _validatePasswordConfirm = true;
+                                errorText9 = "Wachtwoord komt niet overeen";
+                              }
+                              if (passwordController.text.length < 6) {
+                                _validatePasswordConfirm = true;
+                              }
+                              if (passwordConfirmationController.text.length <
+                                  6) {
+                                _validatePasswordConfirm = true;
+                              }
+                              if (!_validateEmail &&
+                                  !_validatePassword &&
+                                  !_validatePassword) {
+                                authService
+                                    .signUp(
+                                    voornaamController.text,
+                                    tussenvoegselController.text,
+                                    achternaamController.text,
+                                    formattedDate,
+                                    parsedLengte,
+                                    parsedGewicht,
+                                    emailController.text,
+                                    passwordController.text)
+                                    .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()),
+                                ));
+                              }
+                            });
+                          },
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shadowColor: Colors.black, backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            minimumSize: const Size.fromHeight(50), // NEW
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            'Ga Terug',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 17
+                            ),
                           ),
                         ),
                       ]);
@@ -308,6 +337,6 @@ class _RegisterState extends State<Register> {
           )
         ],
       ),
-    ));
+    );
   }
 }
