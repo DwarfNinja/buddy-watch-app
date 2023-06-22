@@ -4,12 +4,9 @@ import 'dart:math';
 import 'package:buddywatch_app/models/dummyMeasureData.dart';
 import 'package:buddywatch_app/models/measure.dart';
 import 'package:buddywatch_app/models/measureDTO.dart';
-
-import 'package:buddywatch_app/models/measureDTO.dart';
 import 'package:buddywatch_app/models/measurement_type.dart';
 import 'package:buddywatch_app/widgets/thumb_indicator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:cron/cron.dart';
 import 'package:uuid/uuid.dart';
 
 class MeasureService {
@@ -139,12 +136,19 @@ class MeasureService {
     return min + random.nextInt(max - min + 1);
   }
 
-  Stream<Measure> getLiveMeasureStream() {
-    return Stream.periodic(const Duration(seconds: 2), (_) {
-      Measure m1 = getRandomMeasure();
-      measureList.add(m1);
-      return m1;
-    });
+  Stream<Measure> getLiveMeasureStream(bool callback) async* {
+    if (callback) {
+      Measure measure = getRandomMeasure();
+      measureList.add(measure);
+      yield measure; // Emit the initial callback value
+    }
+
+    while (true) {
+      await Future.delayed(const Duration(seconds: 180));
+      Measure measure = getRandomMeasure();
+      measureList.add(measure);
+      yield measure; // Emit the periodic measure
+    }
   }
 
   Measure getRandomMeasure() {
@@ -178,8 +182,8 @@ class MeasureService {
     Indication oxygenSaturationStatus = getOxygenSaturationStatus(measure.oxygenSaturation);
     Indication sleepStatus = getSleepStatus(sleepData);
 
-    print("respiratory_rate: ${respiratoryRateStatus} temperature: ${temperatureStatus} heart_rate: "
-        "${heartRateStatus} oxygen_saturation: ${oxygenSaturationStatus} sleep_status ${sleepStatus}");
+    print("respiratory_rate: $respiratoryRateStatus temperature: $temperatureStatus heart_rate: "
+        "$heartRateStatus oxygen_saturation: $oxygenSaturationStatus sleep_status $sleepStatus");
 
     Indication averageHealthIndication = Indication.values[(respiratoryRateStatus.index +
         temperatureStatus.index + heartRateStatus.index + oxygenSaturationStatus.index + sleepStatus.index) ~/ 5];

@@ -46,10 +46,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    super.initState();
-    // measureService.deleteAllData();
-    // measureService.insertDummyData();
     _loadIndications();
+    super.initState();
   }
 
   Future<void> _loadIndications() async {
@@ -61,7 +59,6 @@ class _DashboardState extends State<Dashboard> {
     _indicationNeg4 = measureService.calculateStatusDay(todayNeg4);
     _indicationNeg5 = measureService.calculateStatusDay(todayNeg5);
     _indicationNeg6 = measureService.calculateStatusDay(todayNeg6);
-
   }
 
   @override
@@ -194,13 +191,16 @@ class _DashboardState extends State<Dashboard> {
                           ],
                         ),
                         const SizedBox(height: 20), // Add spacing between the two rows
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            ThumbIndicator(indication: indicationNeg2, text: todayNeg2Formatted),
-                            ThumbIndicator(indication: indicationYesterday, text: todayNeg1Formatted),
-                            ThumbIndicator(indication: indicationToday, text: todayFormatted),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              ThumbIndicator(indication: indicationNeg2, text: todayNeg2Formatted),
+                              ThumbIndicator(indication: indicationYesterday, text: todayNeg1Formatted),
+                              ThumbIndicator(indication: indicationToday, text: todayFormatted),
+                            ],
+                          ),
                         ),
                       ],
                     );

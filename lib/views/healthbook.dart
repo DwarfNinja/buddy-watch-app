@@ -30,7 +30,7 @@ class _HealthbookState extends State<Healthbook> {
 
   @override
   void initState() {
-    currentMeasureStream = measureService.getLiveMeasureStream();
+    currentMeasureStream = measureService.getLiveMeasureStream(true);
     sleepDataFuture = Future.value(measureService.getSleepingHoursOfPastSevenDays());
     cron.schedule(Schedule.parse('*/1 * * * *'), () async {
       List<Measure> measures = List.from(measureService.measureList);

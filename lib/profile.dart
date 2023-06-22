@@ -81,6 +81,7 @@ class _ProfileState extends State<Profile> {
                   Spacer(),
                 ],
               ),
+              const SizedBox(height: 10),
               Container (
                 width: 375,
                 height: 600,
