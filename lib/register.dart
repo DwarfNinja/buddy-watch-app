@@ -130,7 +130,7 @@ class _RegisterState extends State<Register> {
                           child: TextField(
                             controller: leeftijdController,
                             decoration: InputDecoration(
-                              labelText: 'Leeftijd',
+                              labelText: 'Geboortedatum',
                               errorText: _validateLeeftijd ? errorText4 : null,
                             ),
                             keyboardType: TextInputType.number,
@@ -249,7 +249,6 @@ class _RegisterState extends State<Register> {
                                 int parsedGewicht = int.parse(gewichtController.text);
 
                                 voornaamController.text.isEmpty ? _validateVoornaam = true : _validateVoornaam = false;
-                                tussenvoegselController.text.isEmpty ? _validateTussenvoegsel = true : _validateTussenvoegsel = false;
                                 achternaamController.text.isEmpty ? _validateAchternaam = true : _validateAchternaam = false;
                                 leeftijdController.text.isEmpty ? _validateLeeftijd = true : _validateLeeftijd = false;
                                 lengteController.text.isEmpty ? _validateLengte = true : _validateLengte = false;

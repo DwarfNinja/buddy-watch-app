@@ -97,13 +97,15 @@ class _LoginState extends State<Login> {
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {
-                          authService.logIn(emailController.text, passwordController.text);
-                          if(authService.isLoggedIn()) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const Home()),
-                            );
-                          }
+                          authService.logIn(emailController.text, passwordController.text)
+                              .then((value) {
+                            if(authService.isLoggedIn()) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home()),
+                              );
+                            }
+                          });
                         },
                         child: const Text(
                           'Inloggen',

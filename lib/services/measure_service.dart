@@ -100,7 +100,7 @@ class MeasureService {
   }
 
   Future<Indication> calculateStatusDay(DateTime day) async {
-    var sleepDataFuture = await Future.value(getSleepingHoursOfPastSevenDays());
+    List<double> sleepDataFuture = [4, 5, 6 ,4, 7, 4, 2];
     List<Measure> measureList = filterMeasuresByDateTime(day);
     int sum = 0;
 
@@ -114,7 +114,7 @@ class MeasureService {
   }
 
   Future<Indication> calculateAverageStatusWeek() async {
-    var sleepDataFuture = await Future.value(getSleepingHoursOfPastSevenDays());
+    List<double> sleepDataFuture = [4, 5, 6 ,4, 7, 4, 2];
     List<Measure> measureList = dummyDataLastWeek;
     int sum = 0;
 
@@ -122,7 +122,7 @@ class MeasureService {
       sum += getHealthIndication(measure, sleepDataFuture).index;
     }
     int averageIndex = sum ~/ measureList.length;
-    Indication averageIndication = Indication.values[averageIndex];
+    Indication averageIndication = Indication.values[averageIndex + 1];
 
     return averageIndication;
   }
@@ -235,11 +235,11 @@ class MeasureService {
     if((temperature >= 35.1 && temperature <= 36.5)) {
       return Indication.elevated;
     }
-    else if(temperature < 35.1 || temperature > 39) {
-      return Indication.critical;
-    }
     else if(temperature >= 37.5 && temperature <= 39) {
       return Indication.high;
+    }
+    else if(temperature < 35.1 || temperature > 39) {
+      return Indication.critical;
     }
     return Indication.low;
   }
