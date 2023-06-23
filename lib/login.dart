@@ -54,6 +54,7 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
+                        autocorrect: false,
                         controller: emailController,
                         decoration: const InputDecoration(
                           hintText: 'Voer hier uw e-mailadres in.',
@@ -61,6 +62,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       TextFormField(
+                        autocorrect: false,
                         controller: passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(

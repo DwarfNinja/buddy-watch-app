@@ -90,6 +90,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                               controller: voornaamController,
+                              autocorrect: false,
                               decoration: InputDecoration(
                                 labelText: 'Voornaam',
                                 errorText:
@@ -102,6 +103,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: tussenvoegselController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Tussenvoegsel',
                               errorText:
@@ -115,6 +117,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: achternaamController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Achternaam',
                               errorText:
@@ -128,6 +131,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: leeftijdController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Geboortedatum',
                               errorText: _validateLeeftijd ? errorText4 : null,
@@ -140,6 +144,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: lengteController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Lengte',
                               errorText: _validateLengte ? errorText5 : null,
@@ -152,6 +157,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: gewichtController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'Gewicht',
                               errorText: _validateGewicht ? errorText6 : null,
@@ -165,6 +171,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: emailController,
+                            autocorrect: false,
                             decoration: InputDecoration(
                               labelText: 'E-mailadres',
                               errorText: _validateEmail ? errorText7 : null,
@@ -178,6 +185,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordController,
+                            autocorrect: false,
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Wachtwoord',
@@ -192,6 +200,7 @@ class _RegisterState extends State<Register> {
                           const EdgeInsets.only(bottom: 15.0, right: 15.0),
                           child: TextField(
                             controller: passwordConfirmationController,
+                            autocorrect: false,
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Wachtwoord bevestigen',
