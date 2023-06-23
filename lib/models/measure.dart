@@ -1,14 +1,26 @@
 class Measure {
-  int measureId;
-  DateTime time;
-  int respiratoryRate;
+  String? id;
+  String? userId;
+  DateTime createdAt;
+  double respiratoryRate;
   double temperature;
-  int heartRate;
-  int oxygenSaturation;
+  double heartRate;
+  double oxygenSaturation;
 
   Measure({
-    required this.measureId,
-    required this.time,
+    required this.id,
+    required this.userId,
+    required this.createdAt,
+    required this.respiratoryRate,
+    required this.temperature,
+    required this.heartRate,
+    required this.oxygenSaturation,
+  });
+
+  Measure.base({
+    required this.id,
+    required this.userId,
+    required this.createdAt,
     required this.respiratoryRate,
     required this.temperature,
     required this.heartRate,
@@ -17,23 +29,35 @@ class Measure {
 
   factory Measure.fromJson(Map<String, dynamic> json) {
     return Measure(
-      measureId: json['measure_id'],
-      time: DateTime.parse(json['time']),
-      respiratoryRate: json['respiratory_rate'],
-      temperature: json['temperature'].toDouble(),
-      heartRate: json['heart_rate'],
-      oxygenSaturation: json['oxygen_saturation'],
+      id: json['id'],
+      userId: json['user_id'],
+      createdAt: DateTime.parse(json['created_at']),
+      respiratoryRate: (json['respiratory_rate'] as int).toDouble(),
+      temperature: (json['temperature'] as int).toDouble(),
+      heartRate: (json['heart_rate'] as int).toDouble(),
+      oxygenSaturation: (json['oxygen_saturation'] as int).toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'measure_id': measureId,
-      'time': time.toIso8601String(),
+      'id': id,
+      'user_id': userId,
+      'created_at': createdAt.toIso8601String(),
       'respiratory_rate': respiratoryRate,
       'temperature': temperature,
       'heart_rate': heartRate,
       'oxygen_saturation': oxygenSaturation,
     };
+  }
+  @override
+  String toString() {
+    return '{id: $id, '
+        'user_id: $userId, '
+        'created_at: $createdAt, '
+        'respiratory_rate: $respiratoryRate, t'
+        'emperature: $temperature, '
+        'heart_rate: $heartRate,'
+        'oxygen_saturation: $oxygenSaturation}';
   }
 }

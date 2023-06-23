@@ -1,7 +1,9 @@
-import 'package:buddywatch_app/dashboard.dart';
 import 'package:buddywatch_app/register.dart';
 import 'package:buddywatch_app/services/auth_service.dart';
+import 'package:buddywatch_app/views/home.dart';
 import 'package:flutter/material.dart';
+
+import 'color_palette.dart';
 
 class Login extends StatefulWidget {
 
@@ -21,7 +23,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey.shade900,
+      backgroundColor: ColorPalette.darkGrey,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -52,6 +54,7 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
+                        autocorrect: false,
                         controller: emailController,
                         decoration: const InputDecoration(
                           hintText: 'Voer hier uw e-mailadres in.',
@@ -59,7 +62,9 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       TextFormField(
+                        autocorrect: false,
                         controller: passwordController,
+                        obscureText: true,
                         decoration: const InputDecoration(
                           hintText: 'Voer hier uw wachtwoord in',
                           labelText: 'Wachtwoord'
@@ -88,23 +93,23 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.blueGrey.shade900,
+                          shadowColor: ColorPalette.darkGrey,
+                          backgroundColor: ColorPalette.darkGrey,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)
                           ),
-                          primary: Colors.blueGrey.shade900,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {
-                          authService.logIn(emailController.text, passwordController.text);
-                          print(authService.isLoggedIn());
-                          if(authService.isLoggedIn()) {
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const Dashboard()),
-                            );
-                          }
+                          authService.logIn(emailController.text, passwordController.text)
+                              .then((value) {
+                            if(authService.isLoggedIn()) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const Home()),
+                              );
+                            }
+                          });
                         },
                         child: const Text(
                           'Inloggen',
@@ -118,11 +123,10 @@ class _LoginState extends State<Login> {
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.black,
+                          shadowColor: Colors.black, backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)
                           ),
-                          primary: Colors.white,
                           minimumSize: const Size.fromHeight(50), // NEW
                         ),
                         onPressed: () {
