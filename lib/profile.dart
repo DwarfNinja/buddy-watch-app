@@ -39,8 +39,8 @@ class _ProfileState extends State<Profile> {
           prepositionController.text = value[0]["preposition"] != value[0]["preposition"] ? value[0]["preposition"]  : "";
           lastNameController.text = value[0]["last_name"];
           dateOfBirthController.text = DateFormat('dd-MM-yyyy').format(DateTime.parse(value[0]["date_of_birth"]));
-          weightController.text = value[0]["height"].toString();
-          heightController.text = value[0]["weight"].toString();
+          heightController.text = value[0]["height"].toString();
+          weightController.text = value[0]["weight"].toString();
     });
     super.initState();
   }
